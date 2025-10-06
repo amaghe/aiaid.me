@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI Agents - aiaid.me</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: {
+                light: "#FF5733",
+                dark: "#FF6F4F"
+              },
+              "background-light": "#FFFFFF",
+              "background-dark": "#121212",
+              "text-light": "#1F2937",
+              "text-dark": "#F3F4F6",
+              "secondary-light": "#F3F4F6",
+              "secondary-dark": "#1F2937"
+            },
+            fontFamily: {
+              display: ["Inter", "sans-serif"],
+            },
+            borderRadius: {
+              DEFAULT: "0.5rem",
+            },
+          },
+        },
+      };
+    </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="min-h-screen flex flex-col">
+<header class="p-4 sm:px-6 lg:px-8">
+<div class="flex items-center justify-between">
+<div class="flex items-center">
+<a href="index.html" class="flex items-center">
+<span class="material-icons text-primary-light dark:text-primary-dark text-3xl">hub</span>
+<span class="text-xl font-bold ml-2 text-text-light dark:text-text-dark">aiaid.me</span>
+</a>
+</div>
+<button class="md:hidden p-2 rounded-md text-text-light dark:text-text-dark" id="mobile-menu-button">
+<span class="material-icons">menu</span>
+</button>
+<nav class="hidden md:flex items-center space-x-6">
+<a class="text-sm font-medium text-text-light dark:text-text-dark hover:text-primary-light dark:hover:text-primary-dark transition-colors" href="agents.html">AI Agents</a>
+<a class="text-sm font-medium text-text-light dark:text-text-dark hover:text-primary-light dark:hover:text-primary-dark transition-colors" href="prompts.html">Prompts Bank</a>
+<a class="text-sm font-medium text-text-light dark:text-text-dark hover:text-primary-light dark:hover:text-primary-dark transition-colors" href="guidance.html">Expert Guidance</a>
+<a class="text-sm font-medium text-text-light dark:text-text-dark hover:text-primary-light dark:hover:text-primary-dark transition-colors" href="about.html">About Us</a>
+<button id="theme-toggle" class="p-2 rounded-full bg-secondary-light dark:bg-secondary-dark hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors">
+<span class="material-icons text-text-light dark:text-text-dark">dark_mode</span>
+</button>
+</nav>
+</div>
+</header>
+<main class="flex-grow py-12 px-4 sm:px-6 lg:px-8">
+<div class="max-w-7xl mx-auto">
+<div class="text-center mb-12">
+<h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-text-light dark:text-text-dark mb-4">
+                        AI Agents Marketplace
+                    </h1>
+<p class="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+                        Discover our curated collection of specialized AI agents designed to solve specific business challenges and automate complex workflows.
+                    </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<!-- Agent Card 1 -->
+<div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+<div class="p-6">
+<div class="w-12 h-12 bg-primary-light dark:bg-primary-dark rounded-lg flex items-center justify-center mb-4">
+<span class="material-icons text-white">smart_toy</span>
+</div>
+<h3 class="text-xl font-bold text-text-light dark:text-text-dark mb-2">Customer Support Agent</h3>
+<p class="text-gray-600 dark:text-gray-400 mb-4">Automate customer inquiries with natural language processing and sentiment analysis.</p>
+<div class="flex items-center justify-between">
+<span class="text-primary-light dark:text-primary-dark font-semibold">$99/month</span>
+<button class="px-4 py-2 bg-primary-light hover:bg-opacity-90 dark:bg-primary-dark dark:hover:bg-opacity-90 text-white rounded-lg text-sm font-medium transition-colors">
+                            Try Demo
+                        </button>
+</div>
+</div>
+</div>
+<!-- Agent Card 2 -->
+<div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+<div class="p-6">
+<div class="w-12 h-12 bg-primary-light dark:bg-primary-dark rounded-lg flex items-center justify-center mb-4">
+<span class="material-icons text-white">trending_up</span>
+</div>
+<h3 class="text-xl font-bold text-text-light dark:text-text-dark mb-2">Sales Analytics Agent</h3>
+<p class="text-gray-600 dark:text-gray-400 mb-4">Predict sales trends and identify opportunities with advanced machine learning algorithms.</p>
+<div class="flex items-center justify-between">
+<span class="text-primary-light dark:text-primary-dark font-semibold">$149/month</span>
+<button class="px-4 py-2 bg-primary-light hover:bg-opacity-90 dark:bg-primary-dark dark:hover:bg-opacity-90 text-white rounded-lg text-sm font-medium transition-colors">
+                            Try Demo
+                        </button>
+</div>
+</div>
+</div>
+<!-- Agent Card 3 -->
+<div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+<div class="p-6">
+<div class="w-12 h-12 bg-primary-light dark:bg-primary-dark rounded-lg flex items-center justify-center mb-4">
+<span class="material-icons text-white">content_copy</span>
+</div>
+<h3 class="text-xl font-bold text-text-light dark:text-text-dark mb-2">Content Creation Agent</h3>
+<p class="text-gray-600 dark:text-gray-400 mb-4">Generate high-quality marketing content, articles, and social media posts automatically.</p>
+<div class="flex items-center justify-between">
+<span class="text-primary-light dark:text-primary-dark font-semibold">$79/month</span>
+<button class="px-4 py-2 bg-primary-light hover:bg-opacity-90 dark:bg-primary-dark dark:hover:bg-opacity-90 text-white rounded-lg text-sm font-medium transition-colors">
+                            Try Demo
+                        </button>
+</div>
+</div>
+</div>
+<!-- Agent Card 4 -->
+<div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+<div class="p-6">
+<div class="w-12 h-12 bg-primary-light dark:bg-primary-dark rounded-lg flex items-center justify-center mb-4">
+<span class="material-icons text-white">security</span>
+</div>
+<h3 class="text-xl font-bold text-text-light dark:text-text-dark mb-2">Security Monitoring Agent</h3>
+<p class="text-gray-600 dark:text-gray-400 mb-4">24/7 threat detection and security analysis for your digital infrastructure.</p>
+<div class="flex items-center justify-between">
+<span class="text-primary-light dark:text-primary-dark font-semibold">$199/month</span>
+<button class="px-4 py-2 bg-primary-light hover:bg-opacity-90 dark:bg-primary-dark dark:hover:bg-opacity-90 text-white rounded-lg text-sm font-medium transition-colors">
+                            Try Demo
+                        </button>
+</div>
+</div>
+</div>
+<!-- Agent Card 5 -->
+<div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+<div class="p-6">
+<div class="w-12 h-12 bg-primary-light dark:bg-primary-dark rounded-lg flex items-center justify-center mb-4">
+<span class="material-icons text-white">person_search</span>
+</div>
+<h3 class="text-xl font-bold text-text-light dark:text-text-dark mb-2">HR Screening Agent</h3>
+<p class="text-gray-600 dark:text-gray-400 mb-4">Automate resume screening and candidate matching with intelligent filtering.</p>
+<div class="flex items-center justify-between">
+<span class="text-primary-light dark:text-primary-dark font-semibold">$129/month</span>
+<button class="px-4 py-2 bg-primary-light hover:bg-opacity-90 dark:bg-primary-dark dark:hover:bg-opacity-90 text-white rounded-lg text-sm font-medium transition-colors">
+                            Try Demo
+                        </button>
+</div>
+</div>
+</div>
+<!-- Agent Card 6 -->
+<div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+<div class="p-6">
+<div class="w-12 h-12 bg-primary-light dark:bg-primary-dark rounded-lg flex items-center justify-center mb-4">
+<span class="material-icons text-white">code</span>
+</div>
+<h3 class="text-xl font-bold text-text-light dark:text-text-dark mb-2">Code Review Agent</h3>
+<p class="text-gray-600 dark:text-gray-400 mb-4">Automated code analysis, bug detection, and security vulnerability scanning.</p>
+<div class="flex items-center justify-between">
+<span class="text-primary-light dark:text-primary-dark font-semibold">$169/month</span>
+<button class="px-4 py-2 bg-primary-light hover:bg-opacity-90 dark:bg-primary-dark dark:hover:bg-opacity-90 text-white rounded-lg text-sm font-medium transition-colors">
+                            Try Demo
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<footer class="p-4 sm:px-6 lg:px-8 text-center text-gray-500 dark:text-gray-400 text-sm">
+<p>© 2025 aiaid.me. All rights reserved.</p>
+</footer>
+</div>
+<script>
+    // Theme toggle functionality
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIcon = themeToggle.querySelector('span');
+    
+    if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+        themeIcon.textContent = 'light_mode';
+    } else {
+        document.documentElement.classList.remove('dark');
+        themeIcon.textContent = 'dark_mode';
+    }
+    
+    themeToggle.addEventListener('click', () => {
+        if (document.documentElement.classList.contains('dark')) {
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('color-theme', 'light');
+            themeIcon.textContent = 'dark_mode';
+        } else {
+            document.documentElement.classList.add('dark');
+            localStorage.setItem('color-theme', 'dark');
+            themeIcon.textContent = 'light_mode';
+        }
+    });
+
+    // Demo button functionality
+    document.querySelectorAll('button').forEach(button => {
+        if (button.textContent.includes('Try Demo')) {
+            button.addEventListener('click', () => {
+                alert('Demo request received! Our team will contact you to schedule a personalized demonstration.');
+            });
+        }
+    });
+</script>
+</body>
+</html>
