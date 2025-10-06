@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>aiaid.me</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: {
+                light: "#FF5733",
+                dark: "#FF6F4F"
+              },
+              "background-light": "#FFFFFF",
+              "background-dark": "#121212",
+              "text-light": "#1F2937",
+              "text-dark": "#F3F4F6",
+              "secondary-light": "#F3F4F6",
+              "secondary-dark": "#1F2937"
+            },
+            fontFamily: {
+              display: ["Inter", "sans-serif"],
+            },
+            borderRadius: {
+              DEFAULT: "0.5rem",
+            },
+          },
+        },
+      };
+    </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<script src="https://unpkg.com/feather-icons"></script>
+<script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="min-h-screen flex flex-col">
+<header class="p-4 sm:px-6 lg:px-8">
+<div class="flex items-center justify-between">
+<div class="flex items-center">
+<span class="material-icons text-primary-light dark:text-primary-dark text-3xl">hub</span>
+<span class="text-xl font-bold ml-2 text-text-light dark:text-text-dark">aiaid.me</span>
+</div>
+<button class="md:hidden p-2 rounded-md text-text-light dark:text-text-dark" id="mobile-menu-button">
+<span class="material-icons">menu</span>
+</button>
+<nav class="hidden md:flex items-center space-x-6" id="desktop-nav">
+<a class="text-sm font-medium text-text-light dark:text-text-dark hover:text-primary-light dark:hover:text-primary-dark transition-colors" href="agents.html">AI Agents</a>
+<a class="text-sm font-medium text-text-light dark:text-text-dark hover:text-primary-light dark:hover:text-primary-dark transition-colors" href="prompts.html">Prompts Bank</a>
+<a class="text-sm font-medium text-text-light dark:text-text-dark hover:text-primary-light dark:hover:text-primary-dark transition-colors" href="guidance.html">Expert Guidance</a>
+<a class="text-sm font-medium text-text-light dark:text-text-dark hover:text-primary-light dark:hover:text-primary-dark transition-colors" href="about.html">About Us</a>
+<button id="theme-toggle" class="p-2 rounded-full bg-secondary-light dark:bg-secondary-dark hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors">
+<span class="material-icons text-text-light dark:text-text-dark">dark_mode</span>
+</button>
+</nav>
+</div>
+<div id="mobile-menu" class="hidden md:hidden mt-4 space-y-4 bg-secondary-light dark:bg-secondary-dark p-4 rounded-lg">
+<a class="block text-sm font-medium text-text-light dark:text-text-dark hover:text-primary-light dark:hover:text-primary-dark transition-colors" href="agents.html">AI Agents</a>
+<a class="block text-sm font-medium text-text-light dark:text-text-dark hover:text-primary-light dark:hover:text-primary-dark transition-colors" href="prompts.html">Prompts Bank</a>
+<a class="block text-sm font-medium text-text-light dark:text-text-dark hover:text-primary-light dark:hover:text-primary-dark transition-colors" href="guidance.html">Expert Guidance</a>
+<a class="block text-sm font-medium text-text-light dark:text-text-dark hover:text-primary-light dark:hover:text-primary-dark transition-colors" href="about.html">About Us</a>
+</div>
+</header>
+<main class="flex-grow flex items-center justify-center text-center px-4 sm:px-6 lg:px-8">
+<div class="max-w-4xl">
+<h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-text-light dark:text-text-dark animate-fade-in">
+                    Your Partner in <span class="text-primary-light dark:text-primary-dark">AI Innovation</span>
+</h1>
+<p class="mt-6 text-lg sm:text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto animate-fade-in-up">
+                    aiaid.me helps individuals and companies make the most of AI. We provide clear strategies, ready-to-use solutions, and expert guidance to turn ideas into real results. From planning to implementation, we give you the tools and knowledge to apply AI effectively and achieve lasting growth and efficiency.
+                </p>
+<div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up">
+<a class="w-full sm:w-auto px-8 py-4 bg-primary-light hover:bg-opacity-90 dark:bg-primary-dark dark:hover:bg-opacity-90 text-white font-semibold rounded-lg shadow-md flex items-center justify-center transition-all hover:scale-105" href="ai-assessment.html">
+                        Start AI Assessment
+                        <span class="material-icons ml-2">arrow_forward</span>
+</a>
+<a class="w-full sm:w-auto px-8 py-4 bg-secondary-light dark:bg-secondary-dark text-text-light dark:text-text-dark font-semibold rounded-lg border border-gray-300 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-800 transition-all hover:scale-105" href="about.html">
+                        Learn More
+                    </a>
+</div>
+</div>
+</main>
+<footer class="p-4 sm:px-6 lg:px-8 text-center text-gray-500 dark:text-gray-400 text-sm">
+<p>© 2025 aiaid.me. All rights reserved.</p>
+</footer>
+</div>
+<script>
+    // Mobile menu toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    mobileMenuButton.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+
+    // Theme toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIcon = themeToggle.querySelector('span');
+    
+    if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+        themeIcon.textContent = 'light_mode';
+    } else {
+        document.documentElement.classList.remove('dark');
+        themeIcon.textContent = 'dark_mode';
+    }
+    
+    themeToggle.addEventListener('click', () => {
+        if (document.documentElement.classList.contains('dark')) {
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('color-theme', 'light');
+            themeIcon.textContent = 'dark_mode';
+        } else {
+            document.documentElement.classList.add('dark');
+            localStorage.setItem('color-theme', 'dark');
+            themeIcon.textContent = 'light_mode';
+        }
+    });
+
+    // Add some basic animations
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-fade-in-up');
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('h1, p, .flex').forEach((el) => {
+        observer.observe(el);
+    });
+
+    feather.replace();
+</script>
+<style>
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    @keyframes fadeInUp {
+        from { 
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to { 
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .animate-fade-in {
+        animation: fadeIn 1s ease-out;
+    }
+    
+    .animate-fade-in-up {
+        animation: fadeInUp 0.8s ease-out;
+    }
+</style>
+</body>
+</html>

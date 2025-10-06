@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Prompts Bank - aiaid.me</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: {
+                light: "#FF5733",
+                dark: "#FF6F4F"
+              },
+              "background-light": "#FFFFFF",
+              "background-dark": "#121212",
+              "text-light": "#1F2937",
+              "text-dark": "#F3F4F6",
+              "secondary-light": "#F3F4F6",
+              "secondary-dark": "#1F2937"
+            },
+            fontFamily: {
+              display: ["Inter", "sans-serif"],
+            },
+            borderRadius: {
+              DEFAULT: "0.5rem",
+            },
+          },
+        },
+      };
+    </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<style>
+  .mobile-menu {
+    display: none;
+  }
+  .mobile-menu.active {
+    display: block;
+  }
+  .prompt-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .prompt-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  .modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 800px;
+    max-height: 80vh;
+    overflow-y: auto;
+    border-radius: 0.5rem;
+  }
+  .dark .modal-content {
+    background-color: #1f2937;
+    border-color: #4b5563;
+  }
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .dark .close {
+    color: #9ca3af;
+  }
+  .dark .close:hover,
+  .dark .close:focus {
+    color: white;
+  }
+</style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="min-h-screen flex flex-col">
+<header class="p-4 sm:px-6 lg:px-8">
+<div class="flex items-center justify-between">
+<div class="flex items-center">
+<a href="index.html" class="flex items-center">
+<span class="material-icons text-primary-light dark:text-primary-dark text-3xl">hub</span>
+<span class="text-xl font-bold ml-2 text-text-light dark:text-text-dark">aiaid.me</span>
+</a>
+</div>
+<button class="md:hidden p-2 rounded-md text-text-light dark:text-text-dark" id="mobile-menu-button">
+<span class="material-icons">menu</span>
+</button>
+<nav class="hidden md:flex items-center space-x-6">
+<a class="text-sm font-medium text-text-light dark:text-text-dark hover:text-primary-light dark:hover:text-primary-dark transition-colors" href="agents.html">AI Agents</a>
+<a class="text-sm font-medium text-text-light dark:text-text-dark hover:text-primary-light dark:hover:text-primary-dark transition-colors" href="prompts.html">Prompts Bank</a>
+<a class="text-sm font-medium text-text-light dark:text-text-dark hover:text-primary-light dark:hover:text-primary-dark transition-colors" href="guidance.html">Expert Guidance</a>
+<a class="text-sm font-medium text-text-light dark:text-text-dark hover:text-primary-light dark:hover:text-primary-dark transition-colors" href="about.html">About Us</a>
+<button id="theme-toggle" class="p-2 rounded-full bg-secondary-light dark:bg-secondary-dark hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors">
+<span class="material-icons text-text-light dark:text-text-dark">dark_mode</span>
+</button>
+</nav>
+</div>
+<!-- Mobile Menu -->
+<div id="mobile-menu" class="mobile-menu md:hidden mt-4">
+<nav class="flex flex-col space-y-4 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
+<a class="text-sm font-medium text-text-light dark:text-text-dark hover:text-primary-light dark:hover:text-primary-dark transition-colors" href="agents.html">Agents</a>
+<a class="text-sm font-medium text-text-light dark:text-text-dark hover:text-primary-light dark:hover:text-primary-dark transition-colors" href="prompts.html">Prompts Bank</a>
+<a class="text-sm font-medium text-text-light dark:text-text-dark hover:text-primary-light dark:hover:text-primary-dark transition-colors" href="guidance.html">Expert Guidance</a>
+<a class="text-sm font-medium text-text-light dark:text-text-dark hover:text-primary-light dark:hover:text-primary-dark transition-colors" href="about.html">About Us</a>
+</nav>
+</div>
+</header>
+<main class="flex-grow py-12 px-4 sm:px-6 lg:px-8">
+<div class="max-w-7xl mx-auto">
+<div class="text-center mb-12">
+<h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-text-light dark:text-text-dark mb-4">
+                        AI Prompts Bank
+                    </h1>
+<p class="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+                        Access our curated library of high-quality prompts for various AI models. Optimize your interactions and get better results from your AI tools.
+                    </p>
+</div>
+<div class="mb-8">
+<div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+<input type="text" placeholder="Search prompts..." class="w-full sm:w-96 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-text-light dark:text-text-dark focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark focus:border-transparent" id="search-input">
+<select class="w-full sm:w-48 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-text-light dark:text-text-dark focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark focus:border-transparent" id="category-filter">
+<option value="">All Categories</option>
+<option value="business">Business & Entrepreneurship</option>
+<option value="education">Education & Learning</option>
+<option value="technology">Technology & AI</option>
+<option value="creative">Creative & Writing</option>
+<option value="health">Health & Wellness</option>
+<option value="marketing">Marketing & Social Media</option>
+<option value="finance">Finance & Investment</option>
+<option value="project-management">Project Management</option>
+<option value="security">Security & Safety</option>
+<option value="hospitality">Hospitality & Tourism</option>
+<option value="government">Government & Public Sector</option>
+<option value="personal-development">Personal Development</option>
+</select>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="prompts-container">
+<!-- Prompt cards will be dynamically inserted here -->
+</div>
+</div>
+</main>
+<footer class="p-4 sm:px-6 lg:px-8 text-center text-gray-500 dark:text-gray-400 text-sm">
+<p>© 2025 aiaid.me. All rights reserved.</p>
+</footer>
+</div>
+
+<!-- Modal -->
+<div id="promptModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2 class="text-2xl font-bold mb-4 text-text-light dark:text-text-dark" id="modalTitle"></h2>
+    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg mb-4">
+      <code class="text-sm text-gray-800 dark:text-gray-200 whitespace-pre-wrap" id="modalContent"></code>
+    </div>
+    <button id="copyPromptBtn" class="w-full px-4 py-2 bg-primary-light hover:bg-opacity-90 dark:bg-primary-dark dark:hover:bg-opacity-90 text-white rounded-lg text-sm font-medium transition-colors flex items-center justify-center">
+      <span class="material-icons text-sm mr-2">content_copy</span>
+      Copy Prompt
+    </button>
+  </div>
+</div>
+
+<script>
+    // Theme toggle functionality
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIcon = themeToggle.querySelector('span');
+    
+    // Check for saved theme or default to light
+    const savedTheme = localStorage.getItem('color-theme');
+    if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+        themeIcon.textContent = 'light_mode';
+    } else {
+        document.documentElement.classList.remove('dark');
+        themeIcon.textContent = 'dark_mode';
+    }
+    
+    themeToggle.addEventListener('click', () => {
+        if (document.documentElement.classList.contains('dark')) {
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('color-theme', 'light');
+            themeIcon.textContent = 'dark_mode';
+        } else {
+            document.documentElement.classList.add('dark');
+            localStorage.setItem('color-theme', 'dark');
+            themeIcon.textContent = 'light_mode';
+        }
+    });
+
+    // Mobile menu toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    mobileMenuButton.addEventListener('click', () => {
+        mobileMenu.classList.toggle('active');
+    });
+
+    // Modal functionality
+    const modal = document.getElementById("promptModal");
+    const span = document.getElementsByClassName("close")[0];
+    const copyPromptBtn = document.getElementById("copyPromptBtn");
+    let currentPromptContent = "";
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    // Copy prompt functionality
+    copyPromptBtn.addEventListener('click', function() {
+        navigator.clipboard.writeText(currentPromptContent).then(() => {
+            const originalText = this.innerHTML;
+            this.innerHTML = '<span class="material-icons text-sm mr-2">check</span>Copied!';
+            setTimeout(() => {
+                this.innerHTML = originalText;
+            }, 2000);
+        });
+    });
+
+    // Prompt data with improved categories and descriptions
+    const promptData = {
+  "prompts": [
+    {
+      "filename": "30_day_project_management_course.md",
+      "content": "Create a comprehensive step-by-step 30-day course on Project Management for beginners who have little or no prior knowledge. The course should guide participants from foundational concepts to more advanced topics systematically. Ensure each step is clear and detailed. Break down the content into daily lessons that gradually build on each other. Incorporate exercises, practical examples, and assessments to reinforce learning. Pay attention to:\n\n- **Introduction to Project Management**: Explain basic terminologies and principles.\n- **Project Lifecycle**: Describe each phase from initiation to closure.\n- **Key Methodologies**: Provide an overview of prominent project management methodologies such as Agile, Waterfall, Scrum, and Kanban.\n- **Tools and Software**: Introduce commonly used project management tools and their functionalities.\n- **Risk Management**: Discuss strategies for identifying and mitigating project risks.\n- **Communication and Leadership**: Highlight the importance of effective communication and leading a project team.\n- **Time Management and Scheduling**: Teach techniques for developing timelines and managing project schedules.\n- **Budgeting and Cost Management**: Explain how to plan and control project costs.\n- **Quality Assurance**: Introduce methods for ensuring project outputs meet desired standards.\n- **Stakeholder Engagement**: Discuss strategies for managing stakeholder expectations and involvement.\n\nMake sure the information is up-to-date and applicable to a global audience. Structure each day with a clear objective, content outline, and summary or review section. \n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.",
+      "category": "project-management",
+      "description": "A structured 30-day course for beginners to learn project management fundamentals."
+    },
+    {
+      "filename": "AI Automation Guide.md",
+      "content": "Create a comprehensive guide to help someone learn about AI automation and achieve financial freedom. Address the following key areas:\n\n- **AI Automation:**\n  - Define AI automation and explain how it can be used in different industries.\n  - Identify popular tools and platforms for AI automation.\n  - Provide a step-by-step plan for learning AI automation, including resources like courses, books, and online communities.\n  - Discuss real-world applications and case studies where AI automation has improved efficiency and productivity.\n\n- **Achieving Financial Freedom:**\n  - Define financial freedom and discuss different strategies to achieve it.\n  - Explain how AI automation can contribute to financial freedom, including potential job opportunities or businesses.\n  - Provide examples of people who have achieved financial freedom with the help of AI automation.\n  - Suggest financial planning and investment strategies that align with the goal of integrating AI automation into one's career.\n\n- **Integration Plan:**\n  - Devise a plan to integrate AI automation skills into one's career to work toward financial freedom.\n  - Offer tips on networking and collaborating with professionals in the AI field to stay updated on trends and opportunities.\n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.",
+      "category": "technology",
+      "description": "Guide to learning AI automation and achieving financial freedom through strategic career integration."
+    },
+    {
+      "filename": "AI Database Management Guide.md",
+      "content": "Create a comprehensive guide on how to effectively use AI to manage and analyze a database in REDCap. Address the following components:\n\n- **AI Tools Identification**: Which AI tools or software can be integrated or used alongside REDCap to enhance data extraction and analysis? Consider both proprietary and open-source tools.\n  \n- **Data Extraction Simplification**:\n  - Describe methods or tools that can automate and simplify the data extraction process from REDCap.\n  - Suggest any AI-driven techniques or platforms that assist in seamless data migration or integration from REDCap to analytical tools.\n  \n- **Maximizing Data Utility**:\n  - Explain strategies or AI applications that can help in transforming raw data into actionable insights.\n  - Discuss any machine learning models or data analytics processes suited for deriving meaningful discoveries and patterns from the database.\n  \n- **Implementation Considerations**:\n  - Highlight any best practices for integrating AI tools with REDCap while ensuring data integrity and security.\n  - Discuss potential challenges or limitations when using AI with REDCap and how to mitigate them.\n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.",
+      "category": "technology",
+      "description": "Guide to using AI tools for managing and analyzing REDCap databases effectively."
+    },
+    {
+      "filename": "AI Innovation Center Development.md",
+      "content": "Create an outline and provide guidance for the development of an AI Innovation Center (AIC) and accompanying 1000 residential units on a 50-acre site at Exciting Idlewild Blvd, Tampa, Florida. The project has a budget of $50 million and an affiliated website on the domain epiclife360.com. The outline should include:\n\n- A step-by-step approach to planning and implementing the AI Innovation Center, considering site development, technological infrastructure, and community integration.\n- Specific AI initiatives and technological innovations to be incorporated within the center.\n- Strategies for integrating the 1000 residential units with the AI center to foster a cohesive community.\n- Guidance on the initial development of the website epiclife360.com that will represent this project, including suggested content, features, and technologies.\n- Key questions to ask stakeholders to ensure thorough understanding and alignment with project goals.\n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.",
+      "category": "technology",
+      "description": "Strategic plan for developing an AI Innovation Center with residential integration."
+    },
+    {
+      "filename": "AI_Product_Guide.md",
+      "content": "**ChatGPT Prompt:**  \n\n\"I need you to create a **digital product guide** that I can sell on the topic **'AI for Dummies.'** This guide should be beginner-friendly, non-intimidating, and designed for readers who have little to no prior knowledge of AI. It should focus on explaining AI concepts in simple terms and demonstrating practical ways people can use AI tools like ChatGPT.  \n\n### **Guide Requirements:**  \n- Write in a **clear, engaging, and approachable** tone that makes AI feel accessible to beginners.  \n- Assume the reader has **no prior experience** with AI and may feel intimidated by technical jargon.  \n- Use **real-world examples and simple analogies** to explain AI concepts.  \n- Include **step-by-step instructions** where applicable to help users get started.  \n- Structure the guide logically so that it progressively builds the reader’s understanding of AI.  \n\n### **Content Outline:**  \n1. **Introduction to AI**  \n   - What is AI in the simplest terms?  \n   - Common misconceptions about AI  \n   - Why AI matters in everyday life  \n\n2. **What AI Can Do**  \n   - Overview of AI applications in daily life (e.g., voice assistants, recommendations, automation)  \n   - Real-world examples of how AI is already being used  \n\n3. **Introduction to GPT-Based AI (like ChatGPT)**  \n   - What is GPT? How does it work in layman's terms?  \n   - Practical use cases: writing, brainstorming, coding assistance, learning, personalization, etc.  \n\n4. **How to Use AI Tools Like ChatGPT**  \n   - Step-by-step setup guide for first-time users (e.g., creating an OpenAI account)  \n   - How to **write effective prompts** to get the best responses  \n   - Tips and tricks for getting the most out of ChatGPT  \n\n5. **Ethics and Limitations of AI**  \n   - What AI **can** and **cannot** do  \n   - Ethical considerations (e.g., bias, misinformation)  \n   - How to use AI responsibly  \n\n6. **Advanced AI Applications for Everyday Users**  \n   - Exploring AI-powered tools for work, creativity, and productivity  \n   - Free vs. paid AI tools – what’s worth investing in?  \n\n7. **Conclusion & Next Steps**  \n   - Encouragement for continued learning  \n   - Resources for further exploration  \n\n### **Additional Guidelines:**  \n- Suggest **helpful visuals** that could be included if the guide were made into a PDF or eBook (diagrams, screenshots, simple infographics).  \n- Provide **content recommendations** for marketing the guide effectively (e.g., key selling points, potential audience).  \n- Ensure the content is **up-to-date** with the latest AI trends and developments.  \n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.\"",
+      "category": "technology",
+      "description": "Beginner-friendly digital product guide to help users understand and use AI tools effectively."
+    },
+    {
+      "filename": "Bird And Insect Identification Course.md",
+      "content": "Create a detailed lesson plan outline for an online bird and insect identification course designed to connect students with local wildlife, spark curiosity, and build observation skills. Your outline should cover the following areas:\n\n- **Course Structure:**\n  - Design interactive sessions where students learn to identify birds and insects. Include methods such as using identification guides, analyzing photographs, and listening to calls.\n  - Develop engaging activities like matching games to help students pair bird calls with species.\n  - Incorporate a unique challenge using lower-quality images to increase the difficulty level and help students sharpen their identification skills.\n\n- **Field Trips and Journals:**\n  - Plan a series of nature trips to local parks where students can use binoculars and field guides to observe birds and insects in their natural environment.\n  - Include instructions for maintaining a nature journal. Each student should record their observations and reflect on their learning experiences throughout the course.\n\n- **Course Outcome:**\n  - Explain how this course fosters environmental awareness, encourages critical thinking, and develops respect for wildlife among students.\n\nYour outline should be structured in a way that is engaging and educational, ensuring a well-rounded learning experience. \n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.",
+      "category": "education",
+      "description": "Interactive online course to teach bird and insect identification while fostering environmental awareness."
+    },
+    {
+      "filename": "Book Finding Challenges.md",
+      "content": "Identify and discuss the common pain points encountered by parents and teachers in finding books for children. Make sure to address the following aspects:\n\n- Age-appropriate content.\n- Reading level suitability.\n- Subject matter relevance.\n- Cultural and social sensitivity.\n- Availability and accessibility (e.g., physical vs. digital copies).\n- Engaging and captivating content.\n- Diversity and representation within the books.\n- Price and budget considerations.\n- Recommendations and reviews.\n- Balancing educational value and entertainment.\n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.",
+      "category": "education",
+      "description": "Analysis of challenges parents and teachers face when selecting appropriate books for children."
+    },
+    {
+      "filename": "Brand Reputation Strategy.md",
+      "content": "Create a high-quality ChatGPT prompt that addresses the following:\n\n- Provide expert guidance on safeguarding and enhancing a brand's reputation specifically for PR agencies and brands.\n- Include strategies for proactive reputation management.\n- Offer tips on handling potential crises or negative publicity.\n- Advise on monitoring tools and techniques to track brand reputation.\n- Suggest methods for building and maintaining a positive public image.\n- Discuss the importance of transparency and authenticity in reputation management.\n\n---\n\nPrompt:\n\n\"I need you to act as an AI Reputation Strategist and provide expert guidance on safeguarding and enhancing a brand's reputation for PR agencies and brands. Please address the following points comprehensively:\n\n- Offer strategies for proactive reputation management.\n- Provide tips on how to handle potential crises or negative publicity effectively.\n- Recommend monitoring tools and techniques to track and assess brand reputation.\n- Suggest methods for building and maintaining a positive public image.\n- Discuss the importance of transparency and authenticity in reputation management.\n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.\"",
+      "category": "marketing",
+      "description": "Expert strategies for managing and enhancing brand reputation for PR agencies and brands."
+    },
+    {
+      "filename": "Branding Guide.md",
+      "content": "Create a comprehensive guide for defining a new business brand and creating a cohesive brand kit. Include detailed descriptions and examples for the following components:\n\n1. **Vision**: \n   - Describe the long-term goal or ultimate impact the business aims to achieve.\n   - Example: \"To create a world where sustainable living is the norm.\"\n\n2. **Mission**: \n   - State what the business does, its target audience, and its core offerings.\n   - Example: \"We provide eco-friendly products that help individuals reduce their carbon footprint.\"\n\n3. **Purpose**: \n   - Define the core reason why the business exists beyond making a profit.\n   - Example: \"We exist to promote a sustainable lifestyle for a healthier planet.\"\n\n4. **Value Proposition**: \n   - Describe the unique value the business provides to its customers.\n   - Example: \"Offering innovative, eco-friendly products that combine quality and affordability.\"\n\n5. **Values**: \n   - List and explain the fundamental beliefs and principles guiding the business.\n   - Example: \"Sustainability, Integrity, Innovation, Community.\"\n\n6. **Key Messages**: \n   - Outline the core messages you want to communicate to your audience. \n   - Example: \"Leading the way in eco-friendly innovation.\"\n\n7. **Personality**: \n   - Describe the brand's character and how it should be perceived by the audience.\n   - Example: \"Friendly, reliable, and progressive.\"\n\n8. **Tone / Voice / Style**: \n   - Define the tone, voice, and style to be used in all communications.\n   - Example: \"Informative yet approachable, professional but not overly formal.\"\n\n9. **Elevator Pitch**: \n   - Provide a concise, compelling summary of the business suitable for a quick introduction.\n   - Example: \"We empower individuals to live sustainably by offering high-quality eco-friendly products.\"\n\nThen, use the defined brand elements to create a prompt for generating consistent content across various business channels and documents, including but not limited to website copy, headlines, quotes, social media profiles, digital brochures, and client presentations. The prompt should ensure that all content feels aligned and cohesive.\n\nExample Prompt for Content Creation:\n\"Using the following brand elements: Vision, Mission, Purpose, Value Proposition, Values, Key Messages, Personality, Tone/Voice/Style, and Elevator Pitch, create content for our [specific platform or document]. Ensure the content aligns with our brand identity and maintains a consistent style. For example, if creating a social media post, use an approachable and friendly tone while highlighting our commitment to sustainability. Provide the content in a format that suits the platform [e.g., headline, post, article, etc.].\"\n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.",
+      "category": "marketing",
+      "description": "Complete guide to defining business brand elements and creating a cohesive brand kit."
+    },
+    {
+      "filename": "Bullying Statistics.md",
+      "content": "- \"I am working on a movement centered around anti-bullying and stress management. I need detailed statistical information about bullying incidents both in educational settings (such as schools) and in the workforce, on a national and global scale. Please help me identify current statistics such as the frequency of bullying incidents among students and employees, including any trends or variations across different regions or demographics worldwide.\n\n- Provide:\n  - An overview of recent statistical data on bullying, specifying the frequency and affected demographics.\n  - Any notable global and national trends in bullying statistics.\n  - A list of reliable sources or organizations where I can find updated bullying statistics.\n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.\"",
+      "category": "personal-development",
+      "description": "Comprehensive statistical analysis of bullying incidents in schools and workplaces globally."
+    },
+    {
+      "filename": "Business Development Strategy.md",
+      "content": "Act as a business development expert specializing in security services. I am launching my first security company and my goal is to secure 5 to 10 long-term security contracts in my local city within the next year. Guide me through a comprehensive, step-by-step strategy that includes:\n\n- How to identify and discover both public and private security contract opportunities in my area, including methods for uncovering lesser-known or hidden opportunities that I might not typically find.\n- Specific online platforms, government portals, industry directories, and offline strategies (e.g., networking methods, outreach ideas) I can use to find active RFPs or upcoming security needs.\n- How to assess which types of security contracts (e.g., commercial, residential, retail, event security, construction site protection) are most viable for a new company like mine to pursue.\n- Crafting sales outreach strategies for B2B clients, including how to effectively cold-call, email, message via LinkedIn, or approach in-person.\n- Word-for-word scripts or sales templates I can use when contacting prospects, tailored to different types of potential clients.\n- How to pitch my services with confidence and professionalism despite being a new company, and ways to build trust quickly.\n- How to negotiate contract terms and pricing structures that are attractive to clients while still profitable.\n- Tips on building a portfolio or proving credibility (such as through subcontracting, pilot programs, or testimonials).\n- How to structure and present a persuasive proposal or bid, including what documents I should include to make my company stand out.\n- Checklist for legal, licensing, and compliance considerations that may increase my chances of landing contracts.\n- Bonus: Any examples, checklists, or tools you recommend I use to stay organized and successful in my contract acquisition plan.\n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.",
+      "category": "business",
+      "description": "Step-by-step strategy for launching a security company and securing long-term contracts."
+    },
+    {
+      "filename": "CanvaIntegration.md",
+      "content": "- Identify and discuss the potential benefits of integrating Canva into the Blotato app for users wanting to add personalized visuals.\n- Explain how Canva's design features could enhance the user experience and the appeal of the viral content produced by Blotato.\n- Explore possible implementation strategies for integrating Canva into the app. Consider technical feasibility, user interface design, and partnership opportunities.\n- Suggest any alternative solutions or tools that could similarly enhance users' ability to create personalized visuals within Blotato.\n- Provide guidance on how to evaluate the success of such an integration in terms of user engagement and satisfaction.\n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.",
+      "category": "technology",
+      "description": "Analysis of benefits and implementation strategies for integrating Canva into app design features."
+    },
+    {
+      "filename": "Career Transition Guide.md",
+      "content": "Create a comprehensive guide to support someone looking to transition from a career as a flight attendant to a new venture involving community building, podcasting, and digital product creation. Consider the following aspects in your response:\n\n- **Emotional Transition**: Provide strategies for managing burnout and finding personal fulfillment after a long career in a demanding industry. Discuss how to reflect on personal strengths and passions to facilitate this transition.\n\n- **Community Building**: Outline steps to build a community around shared challenges, specifically focusing on women experiencing industry burnout. Include ideas for engagement and creating a supportive online environment.\n\n- **Podcast Development**: Provide a step-by-step guide on starting a podcast, including:\n  - Topic selection and branding (aligning with the concept \"A Dream and a Suitcase\").\n  - Technical requirements (equipment, software, and platforms).\n  - Content creation and scheduling.\n  - Marketing strategies for growing an audience.\n\n- **Digital Products and Merchandise**: Suggest types of digital products and merchandise that could be associated with the podcast and community, such as e-books, online courses, or themed merchandise. Consider the logistics of product development and distribution.\n\n- **New Income Streams**: Explore potential new forms of income through podcast monetization, sponsored content, and sales of digital products.\n\n- **Long-term Goals and Vision**: Encourage the creation of a vision statement that encompasses both personal growth and community impact. Discuss goal-setting techniques and evaluation metrics to track progress.\n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.",
+      "category": "personal-development",
+      "description": "Complete guide for transitioning from flight attendant to community building and digital entrepreneurship."
+    },
+    {
+      "filename": "Comic Book Writing Guide.md",
+      "content": "Create a detailed and age-appropriate guide for writing a comic book about perseverance. The guide should be structured as an instructional resource and include the following key elements:\n\n- **Definition of Perseverance**: Provide a simple yet meaningful definition of perseverance and explain how it can be a central theme in a comic book.\n- **Comic Book Structure & Elements**: Define and explain the core elements needed to create a compelling story:\n  - **Plot**: What a plot is and how to structure a comic book story with a beginning, middle, and end.\n  - **Character**: How to create engaging main characters and supporting characters that contribute to the story.\n  - **Theme**: How to ensure perseverance is the central theme of the story.\n  - **Setting**: How to establish a setting that enhances the comic’s storytelling.\n  - **Point of View**: How different points of view can affect storytelling in comics.\n  - **Conflict**: Types of conflict (internal and external) that demonstrate perseverance.\n  - **Hero & Antagonist**: How to create a hero who showcases perseverance and an antagonist who presents challenges.\n  - **Dialogue**: Guidelines for writing effective and engaging dialogue in comic format.\n  - **Pacing**: How to structure panel-to-panel progression to maintain good pacing.\n  - **Resolution**: How to craft a satisfying conclusion that reinforces the theme of perseverance.\n  \n- **Comic Book Formatting**: Explain how to structure a comic book visually, including panel design, captions, and dialogue bubbles.\n\n- **Examples & Exercises**: Provide short examples of perseverance in a comic book format and suggest exercises that guide the writer through each step.\n\nEnsure the response is engaging, easy to understand, and formatted in a way that is helpful for a writer developing a comic book. Ask me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.",
+      "category": "creative",
+      "description": "Step-by-step guide for writing comic books with perseverance as the central theme."
+    },
+    {
+      "filename": "Connect Chapters Cohesively.md",
+      "content": "Create a list of non-fiction writing prompts that focus on connecting different chapters cohesively in a self-help book. The aim is to ensure the book feels like a unified whole rather than a fragmented collection of insights. The book’s theme revolves around exercises and advice for everyday life using C. G. Jung's process. Consider the following elements while crafting the prompts:\n\n- **Chapter Themes and Connections:**\n  - Develop prompts that help in finding thematic links between seemingly disparate topics within your book.\n  - Suggest exercises or questions that encourage reflection on how concepts presented in one chapter relate or build upon those in another.\n  \n- **Narrative and Flow:**\n  - Create prompts that help establish a natural progression or flow from one chapter to the next.\n  - Offer suggestions for transitional sections that could tie themes, concepts, or stories together and create smooth chapter transitions.\n  \n- **Integration of Exercises:**\n  - Include prompts that focus on weaving exercises and practical advice throughout chapters in a way that complements and reinforces the narrative.\n  \n- **Jungian Process Emphasis:**\n  - Provide prompts that explore unique ways of integrating C. G. Jung’s theories and practices to ensure they are a consistent thread throughout the book.\n\n- **Cohesion Strategies:**\n  - Offer techniques or strategies authors can use to revisit and refine their work for greater cohesion, such as reflective journaling about the book themes, or creating mind maps of interconnected ideas.\n\nPlease tailor these prompts to support an author writing in a non-native language, with a focus on clarity and simplicity in expression. \n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.",
+      "category": "creative",
+      "description": "Writing prompts to create cohesive chapter connections in self-help books using Jungian psychology."
+    },
+    {
+      "filename": "Create Book Idea.md",
+      "content": "Create a fictional book idea based on the prominent elements and themes you describe. Follow these specific instructions to ensure a comprehensive response:\n\n- **Genre and Themes:** Specify the genre or themes you're interested in exploring (e.g., mystery, fantasy, romance, adventure, coming-of-age).\n  \n- **Setting:** Describe the world or environment where the story takes place. Is it a real location, fictional universe, historical period, future setting, etc.?\n\n- **Main Characters:** Detail the types of characters you want in your story. Consider including their roles, personalities, goals, and any unique attributes.\n\n- **Plot Outline:** Provide a basic structure for the plot. Highlight the central conflict, significant events, or turning points you envision.\n\n- **Unique Elements:** Mention any special concepts, plot twists, or innovative ideas that will make your story distinctive.\n\n- **Target Audience:** Define the intended readership for your book (e.g., young adult, adults, children).\n\n- **Moral or Message:** Specify any moral lessons, societal messages, or philosophical questions you wish the book to convey.\n\nBy specifying these aspects, I can help develop a coherent and exciting book idea tailored to your vision.\n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.",
+      "category": "creative",
+      "description": "Framework for developing fictional book ideas with detailed genre, setting, and character specifications."
+    },
+    {
+      "filename": "Create Coloring Book Ideas.md",
+      "content": "Create three unique ideas for a coloring book focused on labyrinths and mazes, specifically designed for teenagers. Consider incorporating themes and elements that would appeal to this age group and offer a variety of artistic challenges and creative opportunities. Ensure each idea is distinct, engaging, and offers enough depth to create a full coloring book. Provide detailed descriptions for each idea, including:\n\n- The overarching theme or concept for each idea.\n- A brief description of the types of labyrinths and mazes included in each idea.\n- Suggestions for any additional elements or designs that complement the mazes, such as patterns, cultural motifs, or fantasy elements.\n- Ways to incorporate educational or inspirational content, if applicable, that would appeal to teenagers.\n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.",
+      "category": "creative",
+      "description": "Three unique coloring book concepts featuring labyrinths and mazes for teenage audiences."
+    },
+    {
+      "filename": "Create Ebook Marketing Strategy.md",
+      "content": "Create a comprehensive marketing strategy to promote ebooks across multiple online platforms. The ebooks fall into three categories: relationships, women-focused content, and technology. For each category, provide:\n\n- A list of suggested social media platforms and online marketplaces most suitable for promoting that category.\n- At least three tailored promotional content ideas per platform, including sample social media posts, ad copy, or blog post ideas.\n- Platform-specific promotional tactics (e.g., hashtags, timing of posts, use of paid ads, community engagement tactics).\n- Recommendations for visual elements such as images, graphics, or branding to increase engagement.\n- Suggestions for leveraging influencers, email marketing, or cross-promotion opportunities relevant to each ebook category.\n- A timeline or posting schedule for optimal reach and consistency.\n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.",
+      "category": "marketing",
+      "description": "Comprehensive marketing strategy for promoting ebooks across multiple online platforms."
+    },
+    {
+      "filename": "Create Facebook Post.md",
+      "content": "Create a Facebook post based on specific inputs provided by a user. The post should effectively communicate the user's message and engage their audience. Ensure to address the following components within the post:\n\n- **Introduction**: Craft a compelling opening statement that captures attention.\n- **Main Content**: Incorporate the specific details and key points provided by the user. Make sure the content is coherent and aligns with the user's intentions.\n- **Call-to-Action**: Encourage interaction or response from the audience. This could be in the form of comments, likes, shares, or visits to a link.\n- **Tone and Style**: Adjust the language, tone, and style of the post to match the user's intended audience (e.g., casual, professional, humorous).\n- **Visual Element Suggestions**: Recommend any images, emojis, or hashtags that could enhance the post's engagement and visibility.\n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.",
+      "category": "marketing",
+      "description": "Template for creating engaging Facebook posts with compelling introductions and calls-to-action."
+    },
+    {
+      "filename": "Create Financial Literacy Course.md",
+      "content": "Create a comprehensive online course outline on Financial Literacy for kids. The course should be engaging, age-appropriate, and cover essential financial topics. Please include the following components:\n\n- **Course Title and Description**: Develop an engaging and descriptive title and a brief overview of the course that highlights its goals and benefits for kids.\n\n- **Target Audience**: Specify the appropriate age range or educational level for the course.\n\n- **Course Objectives**: Outline clear, measurable objectives for what students should achieve by the end of the course.\n\n- **Module Breakdown**: Divide the course into modules. For each module, include:\n  - A catchy title\n  - A brief description\n  - Key learning outcomes\n  - Topics covered within the module\n\n- **Lesson Plans**: For each module, provide detailed lesson plans that include:\n  - Lesson titles and objectives\n  - Main content topics\n  - Interactive activities or exercises\n  - Multimedia resources (e.g., videos, games, or infographics)\n  - Assessment methods (e.g., quizzes, projects, or discussions)\n\n- **Engagement Strategies**: Suggest ways to keep kids engaged, such as gamification, stories, and hands-on activities.\n\n- **Course Duration**: Provide an estimate of the total course duration and time allocation for each module.\n\n- **Additional Resources**: Recommend supplementary resources for further reading or exploration.\n\n- **Technical Requirements**: List any necessary technology tools or platforms needed for the course delivery.\n\n- **Certification**: Describe if there will be any certification awarded upon course completion.\n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.",
+      "category": "education",
+      "description": "Engaging online financial literacy course designed specifically for children with interactive modules."
+    },
+    {
+      "filename": "Create Investment Plan.md",
+      "content": "Create an investment plan for building a diversified portfolio that includes dividend stocks, investments with Fidelity, and high-yield savings accounts. Consider the following components:\n\n- **Dividend Stocks**: \n  - Identify and recommend a selection of dividend-paying stocks across diverse sectors.\n  - Explain the criteria for selecting these stocks, focusing on their history of dividend payouts and growth potential.\n  - Discuss the overall percentage of the portfolio that should be allocated to dividend stocks.\n\n- **Fidelity Investments**:\n  - Outline potential investment options available through Fidelity, such as mutual funds or ETFs that align with dividend and growth strategies.\n  - Provide an analysis of how these Fidelity investments can enhance diversification within the portfolio.\n\n- **High-Yield Savings Accounts**:\n  - Recommend high-yield savings accounts options that offer competitive interest rates.\n  - Explain the role of these savings accounts in the overall investment strategy, focusing on stability and liquidity.\n\n- **Diversification Strategy**:\n  - Suggest an optimal allocation strategy across the different investment vehicles.\n  - Explain the benefits of diversification in reducing risk and increasing potential returns.\n  - Discuss the importance of periodically reviewing and adjusting the portfolio based on market conditions and personal financial goals.\n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.",
+      "category": "finance",
+      "description": "Diversified investment plan including dividend stocks, Fidelity investments, and high-yield savings."
+    },
+    {
+      "filename": "Create Lead Magnet.md",
+      "content": "Prompt:\n\n- Identify a specific niche for which you want to create a lead magnet. This could be anything from health and wellness to digital marketing or personal finance.\n  \n- Understand the target audience within that niche. Consider their interests, pain points, and what would grab their attention instantly.\n\n- Develop an engaging and compelling headline that will stop people from scrolling. It should promise a clear and immediate benefit that aligns with the desires or needs of the target audience.\n\n- Describe the type of lead magnet you want to create (e.g., eBook, checklist, webinar, template) and explain why this format will be appealing to the target audience.\n\n- Outline the key content or value that the lead magnet will provide. Make sure it addresses specific problems or questions the audience might have and offers valuable solutions or insights.\n\n- Suggest a visually attractive design strategy or theme that will make the lead magnet stand out visually and match the expectations of the niche audience.\n\n- Include a clear call to action that encourages the target audience to engage with the lead magnet, such as signing up with their email, downloading the document, or watching a video series.\n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.",
+      "category": "marketing",
+      "description": "Framework for creating effective lead magnets with compelling headlines and valuable content."
+    },
+    {
+      "filename": "Create M&A Analysis.md",
+      "content": "Certainly! Here is the high-quality ChatGPT prompt based on the analyzed request:\n\n---\nCreate a detailed analysis focusing on the mergers and acquisitions (M&A) landscape for a business, incorporating data from multiple Excel files. Your analysis should include:\n\n- **Mergers and Acquisitions Report**: Provide a comprehensive overview of the business's M&A activity, highlighting key trends and patterns.\n  \n- **Financial Overview and Trends**: Analyze and summarize the financial data to identify trends and provide insights into the business's financial health.\n\n- **SWOT Analysis**: Conduct a SWOT analysis to evaluate the business's strengths, weaknesses, opportunities, and threats.\n\n- **Owner Questions**: Develop a list of critical questions that need to be answered by the current business owners to support investment decisions.\n\n- **Investment Analysis**: Deliver a detailed investment analysis using both the real financial data and industry-specific research. Ensure the format aligns with industry standards expected from a financial investment analyst.\n\n- **Industry Context**: Provide context by incorporating relevant industry research and benchmarks to better inform the analysis.\n\nFor each section, ensure your findings are formatted in a professional manner suitable for an M&A expert presentation. Include relevant data visualizations where appropriate.\n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.",
+      "category": "business",
+      "description": "Professional M&A analysis report with financial trends, SWOT analysis, and investment recommendations."
+    },
+    {
+      "filename": "Create Pinterest Pin Content Strategy.md",
+      "content": "Create a Pinterest pin content strategy for digital marketing in the e-learning niche. Your task involves crafting engaging pin copy that includes a compelling hook, a concise body, and a clear call-to-action (CTA). Incorporate SEO best practices throughout. Present your final output in a tabulated format with separate columns for each component. Ensure that you cover the following details:\n\n- **Hook**: Devise an attention-grabbing and concise statement or question that immediately captures the interest of Pinterest users in the e-learning space.\n  \n- **Body**: Write a brief and informative description that clearly conveys the value of the e-learning product or service, showcasing its unique benefits.\n\n- **Call-to-Action (CTA)**: Clearly define what action you want the audience to take after viewing the pin, such as visiting a website, signing up for a course, or downloading an ebook.\n\n- **SEO Considerations**: List relevant keywords and phrases that should be included in the pin content to optimize for search visibility on Pinterest. Also, suggest the proper usage of hashtags and any additional SEO tips that could enhance discoverability.\n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.",
+      "category": "marketing",
+      "description": "Pinterest content strategy for e-learning marketing with hooks, CTAs, and SEO optimization."
+    },
+    {
+      "filename": "Create Presentation Deck.md",
+      "content": "Certainly! Here is the refined ChatGPT prompt:\n\n---\n\"I need assistance in generating content and design/code for a high-quality presentation deck focused on sales and marketing. Please help with the following aspects:\n\n- **Content Creation:**  \n  - Outline key topics and subtopics relevant to sales and marketing.\n  - Provide insights into effective storytelling techniques for a presentation.\n  - Suggest any relevant statistics, market trends, or case studies to include.\n\n- **Design/Code:**  \n  - Offer design tips for creating visually appealing slides that capture audience attention.\n  - Recommend tools or software for designing professional presentation decks.\n  - If applicable, provide basic code snippets to enhance presentation functionality (e.g., animations or interactive elements).\n\n- **General Tips:**  \n  - Share best practices for delivering engaging presentations.\n  - Suggest strategies for tailoring the presentation to different audience types (e.g., executives, clients, or team members).\n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.\"",
+      "category": "business",
+      "description": "Complete guide for creating professional sales and marketing presentation decks with design tips."
+    },
+    {
+      "filename": "Create SaaS Sales Proposal.md",
+      "content": "Create a comprehensive and professional SaaS Sales proposal for an insuretech SaaS solution to present to Insurance Carriers. The proposal should include the following components:\n\n- **Executive Summary**: Provide a brief overview of the insuretech SaaS solution, highlighting its unique value proposition and how it addresses the specific needs of insurance carriers.\n  \n- **Product/Service Description**: Detail the features and functionalities of the SaaS solution. Explain how these features integrate within existing carrier systems and processes.\n  \n- **Market Analysis**: Present data and insights about the current insurance market landscape, including trends, challenges, and opportunities where the solution can provide value.\n  \n- **Competitive Analysis**: Analyze competitors in the insuretech space, comparing their offerings to demonstrate the competitive edge of this SaaS solution.\n  \n- **Benefits and ROI**: Clearly outline the benefits insurance carriers will get by adopting this solution. Include potential return on investment calculations or case studies showcasing successful implementations.\n  \n- **Implementation Plan**: Describe the steps involved in implementing the solution, including timelines, resource requirements, and any support services offered during onboarding.\n  \n- **Pricing Model**: Present detailed pricing options, explaining the value proposition for the cost and any available pricing tiers or packages.\n  \n- **Testimonials or Case Studies**: Include any relevant testimonials from existing clients or case studies that demonstrate proven results and customer satisfaction.\n\n- **Contact Information**: Provide clear instructions on how insurance carriers can reach out for further discussion or a demo.\n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.",
+      "category": "business",
+      "description": "Professional SaaS sales proposal for insuretech solutions targeting insurance carriers."
+    },
+    {
+      "filename": "Create Travel Guidebook.md",
+      "content": "Create a comprehensive travel guidebook for a specific town or city that I will name. The guidebook is intended for publication on a travel blog, and the end product should be formatted in an editable .docx file, including visual elements such as photos, charts, maps, and graphs. Ensure content is well-organized and visually engaging, suitable for both print and digital formats. Include the following sections and details:\n\n- Title page with city name, a featured photo, tagline, and date of update.\n- Introduction to the town: a brief overview and any unique characteristics or facts.\n  \n- Top 5 Attractions:\n  - List the top 5 places to visit in the city.\n  - Provide a brief synopsis for each place (about 100–150 words).\n  - Include address, hours of operation, ticket cost (if any), and a high-quality photo or image for each.\n\n- Seasonal Weather Overview:\n  - Describe the climate across all four seasons.\n  - Highlight the best times of the year to visit and why.\n  - Include a mini temperature-precipitation chart.\n\n- Currency & Cost:\n  - State the local currency.\n  - Discuss how expensive the town is compared to similar destination cities (e.g., high, moderate, low).\n  - Include average prices for food, accommodation, and transit.\n\n- Walkability & Transportation:\n  - Evaluate the town’s walkability (scale from 1 to 10).\n  - List available local transportation options (buses, trains, taxis, ride-shares, bike rentals, etc.).\n  - Provide links to relevant official transportation websites or apps.\n  - Add a simple city map showing top attractions and transport stops.\n\n- Local Food:\n  - Describe popular local dishes or cuisines.\n  - Recommend 3–5 top food spots (restaurants, street food, cafes).\n\n- Shopping:\n  - Highlight key shopping areas or local markets.\n  - Suggest where to find locally made products or souvenirs.\n\n- Museums & Parks:\n  - List the best museums and parks to visit.\n  - Include brief descriptions, admission details, and any notable features.\n\n- Safety:\n  - Provide a safety rating using a 1–5 scale (with 5 = very safe).\n  - Add tips for tourists on staying safe (e.g., neighborhoods to avoid, scams, health info).\n\n- Include the following graphical elements:\n  - City map with pins marking top attractions and transport hubs.\n  - Seasonal weather chart (temperature and rainfall).\n  - Cost comparison chart relative to similar cities.\n  - Photos for each major location or topic, using placeholders if needed.\n\nOutput the guide in a well-structured .docx file format that is fully editable, with appropriate headings, bullets, and high-quality layout recommendations for the visuals. Include citations or links to data sources where appropriate.\n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.",
+      "category": "hospitality",
+      "description": "Comprehensive travel guidebook template with attractions, weather, costs, and local recommendations."
+    },
+    {
+      "filename": "Create Grant Proposal.md",
+      "content": "- Create a comprehensive grant proposal based on the following specific information:\n  - Identify the purpose of the grant and the main objectives it aims to achieve.\n  - Clearly define the target audience or beneficiaries of the project.\n  - Elaborate on the project's significance and how it aligns with the funding organization's interests.\n  - Detail the project plan, including activities, timeline, and resources required.\n  - Present a budget outline, specifying how the funds will be allocated and justified.\n  - Highlight any potential challenges and strategies to mitigate them.\n  - Describe the expected outcomes and methods for evaluating project success.\n\n- Ensure the proposal demonstrates a clear link between the objectives, activities, and desired outcomes.\n\n- Use persuasive language to enhance the proposal's appeal to the funder.\n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.",
+      "category": "finance",
+      "description": "Template for creating comprehensive grant proposals with budgets, objectives, and evaluation methods."
+    },
+    {
+      "filename": "Digital Marketing Daily Method.md",
+      "content": "Create a detailed Daily Method of Operation for a Digital Marketing Course you recently purchased. Use the steps below to guide you in crafting a structured and effective daily routine that enhances your learning and implementation of digital marketing strategies:\n\n- **Course Overview**: Briefly describe the main topics and objectives of the digital marketing course. What skills or knowledge does it aim to impart?\n\n- **Daily Goals**: Define your primary goals for each day regarding the course. Are you focusing on learning new concepts, implementing strategies, or both?\n\n- **Time Management**: Specify how much time you plan to dedicate to the course daily. Break this time into focused learning sessions, practice tasks, and review periods.\n\n- **Learning Activities**: Outline the types of activities you plan to engage in daily, such as reading, watching lectures, completing quizzes, or participating in discussions.\n\n- **Practicing Skills**: Detail how you intend to apply what you learn. Will you be working on real-life projects, simulations, or case studies to practice your new skills?\n\n- **Tracking Progress**: Define methods for tracking your progress and understanding. How will you measure your learning achievements, and how often will you assess your progress?\n\n- **Adjustments and Feedback**: Plan for incorporating feedback and making adjustments. How will you gather feedback on your understanding or performance, and how often will you refine your daily method?\n\n- **Motivation and Rewards**: Establish a reward system to keep motivated. What incentives will you set to encourage consistent daily engagement with the course?\n\n- **Resource Management**: List any additional resources or tools you may need to support your learning journey, such as software, books, or community forums.\n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.",
+      "category": "education",
+      "description": "Structured daily routine for maximizing learning and implementation in digital marketing courses."
+    },
+    {
+      "filename": "Document Organization App.md",
+      "content": "Imagine you are assisting with developing an application that helps users organize a large library of assorted documents on their computer. The application should have the following capabilities:\n\n- Scan and process various document types, including PDFs, Word documents (.doc, .docx), Excel spreadsheets (.xls, .xlsx), and more.\n- Allow users to point to a specific folder containing these documents and include all subfolders.\n- Sort and group documents by type (e.g., PDF, DOC, XLS) and by theme (e.g., financial, educational, personal).\n- Identify and separate duplicate documents for the user’s review.\n- After sorting and grouping, create a searchable index of all documents, formatted as a table, listing:\n  - Name of the document\n  - Theme of the document\n  - Type of the document\n  - Location of the document\n\nPlease generate a detailed response that explains how you would design this application with the aforementioned capabilities. Specifically, address the following:\n\n- How you would implement the document scanning feature for different file types.\n- The method you would use to categorize documents by theme.\n- The approach for identifying and handling duplicate documents.\n- Steps to generate a searchable index in table format.\n- Considerations for user interaction and ease of use.\n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.",
+      "category": "technology",
+      "description": "Design plan for a document organization app with scanning, sorting, and duplicate detection features."
+    },
+    {
+      "filename": "Documentary Script Outline.md",
+      "content": "Create a documentary script outline in bullet points with brief explanations (1-2 sentences each), structured to assist in writing a 2000-word script based on these outlines. Ensure the outline fits within a two-page limit. Your outline should:\n\n- Begin with a working title for the documentary.\n- Include a brief introduction that sets the stage for the documentary's subject matter.\n- Develop main section headings that represent key parts of the documentary. For each section:\n  - Provide a bullet point for the title of the section.\n  - Include a brief explanation or objective of the section in 1-2 sentences.\n  - Suggest potential content, stories, or points to be covered in this section.\n- Conclude with a section or bullet point summarizing the overall documentary message or takeaway.\n- Ensure the outline is logically organized to transition smoothly between sections.\n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.",
+      "category": "creative",
+      "description": "Structured documentary script outline with working title, section headings, and content suggestions."
+    },
+    {
+      "filename": "Dream Life Prompt.md",
+      "content": "- Generate a detailed response providing a \"dream life\" prompt for ChatGPT that can help users envision and work towards their ideal life.\n- Include elements that encourage self-reflection and specific goal setting, such as:\n  - Ask the user to describe their ideal day from morning to night.\n  - Encourage the user to consider key areas of their life, including career, relationships, health, and personal growth.\n  - Prompt the user to think about the values and passions that are most important to them.\n  - Suggest the user visualize any obstacles they might encounter and how they would overcome them.\n  - Provide guidance on setting actionable steps to move towards this dream life.\n- Suggest ways the user might maintain motivation and track their progress over time.\n- Structure the prompt to be open-ended to ensure users can provide detailed responses.\n\n\"Ask me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.\"",
+      "category": "personal-development",
+      "description": "Comprehensive prompt to help users envision and plan their ideal life with actionable steps."
+    },
+    {
+      "filename": "Early Childhood Curriculum.md",
+      "content": "### ChatGPT Prompt:  \n\nI need to create a comprehensive early childhood curriculum for a 52-week program serving children from birth to age five. The curriculum should be divided into two main categories:  \n\n- **Infant/Toddler (Birth to Age 2)**  \n- **Preschool (Ages 3-5)**  \n\nThe curriculum should be thematic, utilizing trade-books as the foundation for learning experiences, and should be grounded in playful learning. It must include:  \n\n- **Daily lesson plans** for each age group  \n- **Assessments** to track developmental progress  \n- **Activities** that align with the themes and promote developmentally appropriate learning  \n\nAdditionally, the curriculum should include recommendations for managing **multi-age groupings**, specifically:  \n- Infants and older toddlers together  \n- Age 3 and Age 4 together  \n\nI have already developed templates for lesson plans and foundational documents, as well as the thematic structure. Your task is to generate:  \n\n1. **An overarching curriculum framework** organizing the 52-week schedule by thematic units. Each unit should have key objectives, suggested trade-books, and primary learning goals aligned with early childhood development standards.  \n2. **Detailed daily lesson plan examples** for both Infant/Toddler and Preschool categories, ensuring activities are engaging, interactive, and supportive of early learning goals.  \n3. **Multi-age adaptation strategies** to effectively manage and design learning experiences for mixed-age groups.  \n4. **Assessment methods** that include formative and summative approaches suitable for infants, toddlers, and preschool-aged children.  \n5. **A variety of activities** that support different developmental areas (e.g., cognitive, socio-emotional, motor skills, language).  \n\nEnsure the curriculum is **developmentally appropriate**, engaging, and flexible for diverse early childhood learning environments. Structure the response in a clear, organized format so it can be easily implemented.  \n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.",
+      "category": "education",
+      "description": "52-week early childhood curriculum framework with thematic units and multi-age grouping strategies."
+    },
+    {
+      "filename": "Employee Satisfaction Survey.md",
+      "content": "Create an employee satisfaction and engagement survey for an engineering company, and suggest methods to present the results effectively. Specifically, address the following components:\n\n1. **Survey Questions**:\n    - Design questions to measure overall employee satisfaction.\n    - Include questions that gauge employee engagement levels.\n    - Create questions targeting specific areas such as work environment, management, professional development opportunities, work-life balance, and team collaboration.\n    - Include both quantitative and qualitative questions to get a comprehensive understanding.\n\n2. **Question Types**:\n    - Use various types of questions like Likert scale, multiple choice, open-ended, and ranking questions.\n\n3. **Presentation of Results**:\n    - Propose different methods to present the survey results (e.g., visual aids like graphs and charts, written summaries, dashboards).\n    - Suggest best practices for sharing the results with different stakeholders (executive team, managers, general staff).\n    - Recommend ways to keep the presentation engaging and informative.\n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.",
+      "category": "business",
+      "description": "Employee satisfaction survey for engineering companies with comprehensive question design and result presentation."
+    },
+    {
+      "filename": "ExecutiveAssistantEfficiencyGuide.md",
+      "content": "Create a detailed guide on how to be more efficient as an Executive Assistant and outline tricks and skills that can be learned to improve in this role. The response should cover the following aspects:\n\n- **Time Management Techniques**: Describe effective time management methods tailored for Executive Assistants, such as prioritization strategies, and the use of scheduling tools.\n  \n- **Organization Skills**: Provide tips on maintaining a well-organized workspace and managing digital files efficiently. Discuss methods for handling high volumes of information and tasks.\n\n- **Communication Skills**: Explain the importance of strong communication skills and suggest ways to improve both written and verbal communication within an executive environment.\n\n- **Technology and Tools**: Recommend essential tools and software that Executive Assistants should become proficient with, including calendar management applications, email management systems, and virtual collaboration platforms.\n\n- **Proactive Problem-Solving**: Offer strategies for anticipating issues before they arise and discuss ways to develop problem-solving skills that can preemptively address potential challenges.\n\n- **Professional Growth**: Suggest actionable steps for continued learning and development within the Executive Assistant role, such as relevant certifications, courses, or networking opportunities.\n\n- **Stress Management**: Share techniques for managing stress effectively in a high-pressure executive support environment.\n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.",
+      "category": "business",
+      "description": "Comprehensive guide to improving efficiency and skills for Executive Assistants with time management and communication tips."
+    },
+    {
+      "filename": "Fitness Training Plan.md",
+      "content": "Create a detailed 4-day training plan tailored to help achieve weight loss, muscle definition, and muscle gain in a healthy and efficient manner. Follow these guidelines for the personalized training plan:\n\n- **Needs and Goals Assessment**: \n  - Begin by asking questions to better understand any specific needs, limitations, or preferences.\n  - Clarify the primary goals around weight loss, muscle definition, and muscle gain.\n\n- **Training Plan Design**:\n  - Include a mix of cardiovascular exercises, strength training, and flexibility exercises.\n  - Allocate specific days for each focus area while ensuring overall balance.\n  - Incorporate a variety of exercises to target different muscle groups and promote overall fitness.\n\n- **Health and Efficiency Considerations**:\n  - Ensure all exercises and training loads are appropriate for maintaining health and preventing injury.\n  - Recommend suitable warm-up and cool-down routines to enhance effectiveness and recovery.\n\n- **Time Management**:\n  - Design each session to be efficient in timing, ideally fitting within a designated time frame (e.g., 45 minutes to 1 hour).\n  - Offer time-saving techniques to maximize workout efficiency.\n\n- **Additional Recommendations**:\n  - Suggest nutrition tips or information that complement the fitness goals, while specifying that detailed dietary advice should be sought from a qualified nutritionist.\n  - Propose methods for tracking progress and maintaining motivation.\n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.",
+      "category": "health",
+      "description": "4-day fitness training plan for weight loss, muscle definition, and muscle gain with health considerations."
+    },
+    {
+      "filename": "Foundational Nutrition FitnessCourse.md",
+      "content": "You are an expert in instructional design and e-learning development with a strong background in nutrition and fitness education. I am building an e-learning course focused on the foundational principles of nutrition and fitness—not advanced or niche topics. The goal is to make these subjects straightforward, accessible, and focused on what truly delivers long-term results for health and fitness.\n\nPlease help me develop a strategic plan for this course, covering the following areas in depth:\n\n• Course structure:\n  - Propose a module-by-module outline based on key foundational principles of nutrition and fitness.\n  - Identify logical progression and sequencing for learner comprehension and retention.\n\n• Content creation:\n  - Recommend core topics, subtopics, and lessons for each module.\n  - Suggest simple yet impactful explanations, evidence-based guidelines, and practical examples to enhance clarity and applicability.\n  - Include recommendations for visual aids, graphics, or analogies to improve engagement and learning outcomes.\n\n• Audience engagement:\n  - Detail interactive features (quizzes, reflection activities, discussion prompts, challenges, etc.) that will keep students engaged and committed.\n  - Propose ideas for creating learner accountability and fostering a sense of progress.\n\n• Value delivery:\n  - Define strategies for helping learners apply what they’re learning to real life (e.g., goal-setting, habit tracking, simple action plans).\n  - Share tactics for reinforcing core principles so they stick long-term.\n  - Recommend how to differentiate this course in a crowded market while staying true to the focus on foundational value.\n\nMake your response practical and detailed, suitable for immediate use in course development. Ask me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.",
+      "category": "education",
+      "description": "Strategic plan for developing a foundational nutrition and fitness e-learning course with engaging modules."
+    },
+    {
+      "filename": "Funding High School Track.md",
+      "content": "- You are helping a high school Track & Field coach seeking funding sources to replace a track costing approximately $670,000. \n- Identify potential sources of funding, including grants, donors, and any relevant funding bodies that support high school athletic programs or community sports facilities.\n- List specific grants that may assist in funding the new track, along with deadlines, application criteria, and any relevant details that the coach should be aware of.\n- Provide strategies and tips for approaching and engaging with potential donors.\n- Assist in drafting effective grant applications, including crafting compelling narratives on why the funding is needed and how it will benefit the community or school.\n- Include any common best practices or required components for successful grant applications in this context.\n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.",
+      "category": "finance",
+      "description": "Funding guide for high school track replacement with grants, donors, and application strategies."
+    },
+    {
+      "filename": "Funding Strategies.md",
+      "content": "Create a detailed plan for a solo entrepreneur seeking financial support while preserving existing assets. Address the following components:\n\n- Explore various funding options available for entrepreneurs, focusing on short to mid-term solutions:\n  - Different types of loans and lines of credit that may be applicable.\n  - Grants or subsidies for solo entrepreneurs or small businesses.\n  - Equity financing options that do not require relinquishing asset control.\n  - Peer-to-peer lending platforms or crowdfunding as potential sources of funds.\n\n- Investigate the potential of leveraging existing assets to secure funding without losing ownership:\n  - How equity in mortgaged homes or pooled land arrangements can be used in collateral agreements.\n  - Risks involved in using personal assets as collateral and how to mitigate them.\n\n- Provide strategies for financial sustainability:\n  - Cost-reduction techniques to lower the burn rate of savings.\n  - Financial planning tips to manage cash flow better during periods of limited income.\n\n- Discuss methods for achieving financial independence:\n  - Building passive income streams aligned with the entrepreneur’s current operations.\n  - Diversifying revenue sources to create a more stable financial base.\n\n- Present resources for accessing professional advice or mentorship in financial management.\n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.",
+      "category": "finance",
+      "description": "Comprehensive funding plan for solo entrepreneurs preserving assets while seeking financial support."
+    },
+    {
+      "filename": "GRE Study Guide.md",
+      "content": "Create a detailed study guide with step-by-step, line-by-line instructions on how to effectively study for and successfully pass the GRE. The guide should be structured in a clear, actionable manner and should include:  \n\n- A comprehensive study plan that spans several weeks or months, depending on the typical preparation timeline.  \n- A breakdown of study strategies for each section of the GRE (Verbal Reasoning, Quantitative Reasoning, and Analytical Writing).  \n- A specific emphasis on strategies to improve performance on the Quantitative Reasoning section, including recommendations for foundational math review, problem-solving techniques, and common pitfalls to avoid.  \n- Daily and weekly study schedules, specifying when and how to review concepts, take practice tests, and assess progress.  \n- Suggested high-quality resources, such as books, online courses, practice tests, and study apps to enhance GRE preparation.  \n- Step-by-step instructions on how to approach practice problems, analyze mistakes, and track progress effectively.  \n- Test-taking strategies, including time management tips, stress reduction techniques, and ways to approach different question types.  \n- Practical advice on maintaining motivation and avoiding burnout throughout the preparation period.  \n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.\"",
+      "category": "education",
+      "description": "Detailed GRE study guide with study plans, strategies, and test-taking tips for all sections."
+    },
+    {
+      "filename": "Generational Differences Masterclass.md",
+      "content": "I am developing a master class about generational differences in the workplace. Although the core content is strong, I am concerned that its relevance and appeal to the audience are lacking. I need your help to enhance the content’s relevance, sharpen its shape, and make it more engaging and compelling for the listener.\n\nPlease help by doing the following:\n\n- Analyze the current concept of \"generational differences in the workplace\" and identify key trends, real-world examples, and hot-button issues that would make the topic feel immediately relevant and vital to a modern audience.\n- Suggest methods for storytelling, case studies, or real-life scenarios that can illustrate the generational workplace dynamics in a relatable and impactful way.\n- Recommend ways to structure the master class for better emotional engagement—such as hooks, provocative questions, interactive segments, or thought experiments.\n- Propose clear techniques to make the audience feel a personal stake in the material (e.g., how it affects their career, team performance, company culture, or leadership success).\n- Format your advice into clear actionable sections: (1) Ways to Make the Content More Relevant, (2) Audience Engagement Strategies, (3) Examples and Storytelling Ideas, and (4) Recommended Structure Flow.\n- Make sure your suggestions are pragmatic and high-quality, assuming the listener is a professional audience interested in workplace improvement.\n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.",
+      "category": "business",
+      "description": "Enhancement strategies for a master class on generational differences in the workplace with engagement techniques."
+    },
+    {
+      "filename": "Government Contract Opportunities.md",
+      "content": "Act as a research assistant skilled in sourcing government contract opportunities. I want you to help me find current or upcoming state, local, and city-level government contract opportunities that align with my professional background and expertise. Use official procurement websites (e.g., SAM.gov, state and city contract portals), grants databases, and recent RFP/RFI postings. Focus your search specifically on:\n\n- Contracts related to the Nursing Profession\n- Opportunities in nursing education or nursing-related training\n- Roles involving nursing services, such as consulting, direct service delivery, or public health initiatives\n- Clinical and community-based opportunities related to Women's Health and OB/GYN\n\nConsider that I am a licensed RN, Nurse Practitioner, and hold an Advanced Practice degree and MBA. I am particularly interested in opportunities where I can use this combination of clinical expertise and business/administrative skills.\n\nInclude the following in your output:\n\n1. A list of currently available or upcoming contract opportunities, prioritized by relevance to my background.\n2. For each opportunity, provide:\n   - Title\n   - Issuing government agency\n   - Brief summary of the scope of work\n   - Contract location (city, county, state)\n   - Application deadline and any key dates\n   - Link to the posting or source for more information\n3. Summarize how well each opportunity matches my professional qualifications.\n4. Provide recommendations on how to tailor my application or capability statement to align with the opportunity.\n5. If needed, suggest keywords, search terms, or filters I can use to independently search for similar opportunities in the future.\n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.",
+      "category": "government",
+      "description": "Research assistance for finding government contract opportunities aligned with nursing and business expertise."
+    },
+    {
+      "filename": "Halloween BookIdeas.md",
+      "content": "Create a list of 12 Halloween-themed book ideas targeted at teenagers with a brooding and introspective nature. Consider incorporating elements that would appeal to their interest in darker, more complex narratives. Each book idea should include:\n\n- A compelling and unique title.\n- A brief synopsis of the book's plot.\n- Key themes and motifs that would appeal to a brooding teenage audience.\n- The emotional or psychological journey of the main characters.\n- The setting of the story and how it contributes to the overall mood.\n\nEnsure that each idea is distinct and provides variety in terms of horror sub-genres, narrative styles, and character development. \n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.",
+      "category": "creative",
+      "description": "12 Halloween-themed book ideas for teenagers with brooding and introspective interests."
+    },
+    {
+      "filename": "Health And Wellness Content.md",
+      "content": "Create a comprehensive ChatGPT prompt for a health and wellness content writer targeting audiences managing chronic illnesses, wellness enthusiasts, people with trauma on a healing journey, people with sleep problems, those who love holistic living, and younger populations wanting to stay healthy. Design the prompt to generate helpful, actionable, and easy-to-follow information. \n\n---\n\n\"Please help me create high-quality, informative content for my health and wellness blog. Focus on providing helpful, actionable, and easy-to-follow advice that caters to the following audiences:\n\n1. People managing chronic illnesses:\n   - Share strategies for daily management.\n   - Offer advice on diet, exercise, and mental health specifically beneficial for chronic conditions.\n   - Recommend support groups or resources.\n\n2. Wellness enthusiasts:\n   - Provide tips for enhancing overall wellness.\n   - Suggest new wellness trends and practices.\n   - Highlight the benefits of a balanced lifestyle.\n\n3. Individuals with trauma on a healing journey:\n   - Offer practical steps for coping and healing.\n   - Provide information about therapy options and self-care practices.\n   - Share stories of hope and recovery.\n\n4. People with sleep problems:\n   - Suggest techniques for improving sleep hygiene.\n   - Offer natural remedies and lifestyle changes to enhance sleep quality.\n   - Explain how sleep affects overall health and wellness.\n\n5. Fans of holistic living:\n   - Provide holistic health tips incorporating mind, body, and spirit.\n   - Recommend natural and alternative therapies.\n   - Discuss the benefits of organic and sustainable living.\n\n6. Younger population aiming to remain healthy:\n   - Suggest healthy habits relevant to young adults.\n   - Offer advice on preventive healthcare and early intervention.\n   - Provide fun and engaging ways to stay active and eat well.\n\nEnsure that each piece of content is:\n- Based on up-to-date, evidence-based information.\n- Easy to understand and implement.\n- Practical and actionable.\n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.\"",
+      "category": "health",
+      "description": "Comprehensive health and wellness content prompt for diverse audiences with actionable advice."
+    },
+    {
+      "filename": "Home Improvement Promotion.md",
+      "content": "Create promotional content for a home improvement company, focusing on creativity and effectiveness. Include the following aspects:\n\n- **Highlight Unique Selling Points**: Identify and emphasize what sets the company apart from competitors (e.g., high-quality materials, craftsmanship, innovative solutions, customer satisfaction).\n- **Target Audience**: Cater the message towards homeowners interested in renovating, remodeling, or upgrading their homes. Suggest ways to tailor content for different demographics and property styles.\n- **Service Offerings**: Clearly list and explain the types of home improvement services offered by the company. Consider including popular services such as kitchen and bathroom remodeling, flooring, roofing, and exterior improvements.\n- **Visual and Emotional Appeal**: Suggest strategies to incorporate compelling visuals and emotional appeals in the promotions to engage potential customers. This could include before-and-after photos, video testimonials, or emotional storytelling.\n- **Call to Action**: Design an effective call to action that encourages potential customers to get in touch, schedule a consultation, or visit the company’s website or showroom.\n- **Promotion Channels**: Identify the most effective channels for distributing the promotional content (e.g., social media, email marketing, local advertising, home improvement shows).\n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.",
+      "category": "marketing",
+      "description": "Creative promotional content strategy for home improvement companies with visual and emotional appeal."
+    },
+    {
+      "filename": "Instagram Growth Strategy.md",
+      "content": "You are a social media strategist and small business consultant. Create a comprehensive, step-by-step Instagram growth strategy for a new Instagram page built around a security network. The goal of the page is to:\n\n- Connect security guards with companies and businesses looking to hire them.\n- Help individuals become security guards by providing educational resources and job opportunities.\n- Grow the Instagram page quickly to build brand awareness and attract both guards and businesses.\n- Establish a brand similar to Airbnb, but for the security industry—acting as a trusted platform for matching clients with service providers.\n\nYour response should include:\n\n- A clear, step-by-step weekly content plan for posts and stories (with post types, captions, hashtags, and timing).\n- Types of daily posts to include (e.g., job alerts, training tips, testimonials, industry news, company spotlights, etc.).\n- Examples of Instagram Stories to use for engagement, including interactive features (polls, quizzes, sliders, Q&A, etc.).\n- Guidelines on branding, tone of voice, and visual consistency (including any tools that might help).\n- Hashtag strategy specific to the security and staffing/recruitment industry.\n- Tips for leveraging growth tactics (e.g., collaborating with influencers, paid ads, shoutouts, giveaways, community engagement).\n- A system to consistently educate followers about the security field and show how to become/remain qualified.\n- Recommendations on tracking success and measuring growth metrics weekly. \n\nEnsure your plan is suitable for a solo founder or very small team with limited resources. Your strategy should be actionable, organized, and detailed enough that it could be followed with minimal background knowledge.\n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.",
+      "category": "marketing",
+      "description": "Step-by-step Instagram growth strategy for a security network connecting guards with employers."
+    },
+    {
+      "filename": "Instagram AI Reels Strategy.md",
+      "content": "Create a detailed strategy for using AI to generate Instagram reels focused on helping individuals get in shape and boost body confidence. Consider the following aspects:\n\n- **Content Ideas**: Generate a list of engaging and informative topics for Instagram reels that align with fitness and body confidence themes. Consider incorporating workouts, nutrition tips, and motivation segments.\n- **Target Audience**: Define strategies to appeal specifically to individuals interested in fitness and body confidence. Consider creating personas to better tailor content.\n- **AI Utilization**: Identify AI tools and techniques that can help create, edit, and optimize Instagram reels. Explain how AI can enhance content personalization and audience engagement.\n- **Trends and Hashtags**: Research current fitness and nutrition trends and suggest relevant hashtags that can increase the visibility of reels on Instagram.\n- **Consistency and Branding**: Provide tips on maintaining a consistent posting schedule and developing a cohesive brand aesthetic that resonates with the target audience.\n- **Measuring Success**: Outline methods for tracking engagement metrics and measuring the success of Instagram reels in growing an online presence.\n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.",
+      "category": "marketing",
+      "description": "AI-powered Instagram reels strategy for fitness and body confidence with content and engagement tactics."
+    },
+    {
+      "filename": "Internal Audit Program Template.md",
+      "content": "- Develop a comprehensive internal audit program template for any specified process within banking, credit unions, or fintech firms. The template should include the following components:\n  - Risk Control\n  - Inherent Risk\n  - Control Objective\n  - Testing Procedures\n  - Error Number and Rate\n  - Regulatory Citations\n  - Additional Notes\n  - Allow for customization by simply inputting the process name, such as \"branch operations.\"\n\n- Create guidelines to produce a cohesive and easy-to-read proposal document for a compliance and audit firm. The proposal should:\n  - Adhere to generally accepted practices in the audit and compliance industry\n  - Include sections to outline the scope of each discussed process clearly\n\n- Design a method to hyperlink relevant regulatory guidance and provide:\n  - A concise summary of regulatory requirements\n  - A clear layout of processes that are easy to implement within organizations\n  - Examples to clarify concepts, such as model governance, its importance, key assumptions, and necessary documentation like the Model Risk Management policy and procedures\n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.",
+      "category": "business",
+      "description": "Comprehensive internal audit program template for banking and fintech firms with regulatory guidance."
+    },
+    {
+      "filename": "Luxury Hospitality Training.md",
+      "content": "Create comprehensive tourism and hospitality training content focused on the field of luxury modern hospitality. The aim is to educate students and hospitality professionals. Ensure the content covers the following aspects:\n\n- **Overview of Luxury Modern Hospitality:**\n  - Define what constitutes luxury modern hospitality and its key features.\n  - Discuss current trends and innovations in the luxury hospitality sector.\n  - Highlight the importance and impact of luxury hospitality within the broader tourism industry.\n\n- **Key Areas of Training:**\n  - Customer service excellence specific to luxury clientele.\n  - Best practices in providing personalized experiences.\n  - Training on high-end services, including concierge, culinary arts, and wellness services.\n  - Sustainability and ethical practices in luxury hospitality.\n\n- **Operational and Management Skills:**\n  - Explore leadership skills necessary for managing luxury hospitality establishments.\n  - Discuss financial management tailored to luxury services.\n  - Cover marketing strategies to attract and retain high-end clients.\n\n- **Cultural Competence:**\n  - Include training on cultural sensitivity and diversity to cater to an international clientele.\n  - Discuss the importance of understanding global luxury market preferences.\n\n- **Technological Integration:**\n  - Examine how technology can enhance luxury hospitality experiences.\n  - Provide examples of tech tools that are currently revolutionizing the industry.\n\n- **Case Studies and Real-world Applications:**\n  - Incorporate case studies of successful luxury hospitality businesses.\n  - Offer practical exercises or scenarios for students and professionals to solve.\n\n- **Evaluation and Feedback Mechanisms:**\n  - Suggest methods to evaluate trainee progress and receive feedback.\n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.",
+      "category": "hospitality",
+      "description": "Comprehensive luxury hospitality training program covering service excellence and management skills."
+    },
+    {
+      "filename": "Marcus Garvey Influence on Reggae.md",
+      "content": "Create a detailed article exploring Marcus Garvey's influence on Reggae music. Your article should cover the following sub-tasks:\n\n- Provide a brief biography of Marcus Garvey, highlighting his major contributions to Pan-Africanism and social movements.\n- Explain the core principles of Garveyism and how they relate to cultural and musical movements.\n- Analyze specific instances or elements of Reggae music where Marcus Garvey's ideas and influence are evident. Consider lyrical themes, notable musicians, and specific songs that embody his teachings.\n- Discuss how key figures in the Reggae genre, such as Bob Marley or Burning Spear, have been influenced by Garvey's philosophy.\n- Explore the historical and social context of the time when Reggae emerged, and how Garvey's ideas resonated with the struggles and aspirations of the people.\n- Conclude with the lasting impact of Garvey's philosophy on Reggae and its relevance to current social and cultural movements.\n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.",
+      "category": "creative",
+      "description": "Detailed analysis of Marcus Garvey's influence on Reggae music and its cultural significance."
+    },
+    {
+      "filename": "Marketing Content Strategies.md",
+      "content": "### ChatGPT Prompt:\n\nYou are an AI assistant customized to help create marketing content for a Home & Garden Expo. Your task is to assist in developing effective marketing strategies and content ideas. Address the following:\n\n- **Content Development**:\n  - Suggest engaging and informative content topics related to home and garden improvements that could attract the expo audience.\n  - Recommend formats (e.g., blog posts, social media posts, videos) to present these topics effectively.\n  - Provide tips on how to maintain a consistent voice and tone across different platforms while catering to varied audience segments.\n\n- **Audience Engagement**:\n  - Identify key demographics and interest groups that would be interested in the Home & Garden Expo.\n  - Offer strategies for engaging these specific audience segments through targeted messaging and interactive content.\n\n- **Event Promotion**:\n  - Provide ideas for promotional campaigns (e.g., early bird tickets, contests) that can boost attendee numbers.\n  - Offer examples of how to leverage social media platforms for maximum exposure and engagement leading up to the event.\n\n- **Performance Analysis**:\n  - Suggest metrics to track the performance of the marketing content.\n  - Provide guidance on how to interpret these metrics to refine marketing strategies continuously.\n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.",
+      "category": "marketing",
+      "description": "Marketing strategies and content ideas for promoting a Home & Garden Expo with audience engagement tactics."
+    },
+    {
+      "filename": "Nursing Study Guide.md",
+      "content": "**ChatGPT Prompt:**  \n\n\"Create a study guide for nursing students focused on matching vocabulary terms with their corresponding definitions or defining information. Ensure that:  \n\n- The vocabulary terms and definitions are mixed randomly to make the exercise more challenging.  \n- The definitions are written in a way that a beginner can easily understand and comprehend.  \n- The guide covers essential nursing terminology that is commonly encountered in nursing studies.  \n- The format of the study guide allows for interactive learning, such as a quiz-like matching section or flashcards.  \n- Explanations are clear, concise, and accurate, ensuring ease of learning.  \n\nProvide the study guide in an easy-to-read format, such as a list of terms with mixed-up definitions, a table with two columns (one for terms and one for shuffled definitions), or another interactive format suitable for studying.  \n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.\"",
+      "category": "education",
+      "description": "Interactive nursing study guide with vocabulary terms and definitions for beginner students."
+    },
+    {
+      "filename": "Nutrition And Fitness Course.md",
+      "content": "Design an e-learning course focused on the basics of nutrition and fitness by addressing the following key components:\n\n- **Content Creation**:\n  - Outline the foundational principles of nutrition and fitness that are essential for long-term success. Focus on the core topics that deliver real results.\n  - Create engaging and informative content that simplifies complex topics, making them accessible to a broad audience.\n  - Develop various types of educational materials such as video lectures, infographics, quizzes, and reading materials that reinforce core principles.\n\n- **Audience Engagement**:\n  - Propose strategies for maintaining active engagement with students throughout the course. Consider interactive elements such as discussion forums, live Q&A sessions, or community challenges.\n  - Suggest methods to gather and incorporate student feedback to continuously improve the course experience.\n  - Recommend techniques for fostering a supportive and motivating environment that keeps participants committed to their learning goals.\n\n- **Delivering Value**:\n  - Identify metrics or KPIs that can be used to measure the course's success in delivering valuable knowledge that leads to actionable results for participants.\n  - Suggest value-added services or additional resources, such as personalized coaching, meal planning guides, or fitness tracking tools, that can enhance the learner's journey.\n  - Develop a clear value proposition that differentiates your course from others in a saturated market, emphasizing the focus on core principles.\n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.",
+      "category": "education",
+      "description": "E-learning course design for nutrition and fitness basics with engagement and value delivery strategies."
+    },
+    {
+      "filename": "Pest Control Business Strategy.md",
+      "content": "You are a business and marketing strategist assisting with the launch of a small, independently owned pest control business in Simcoe County, Ontario. Your task is to help develop a comprehensive business and marketing plan that accommodates a limited budget and the fact that the business is currently operated by one individual. The plan should include:\n\n- A basic business plan tailored to a solo-operated, licensed, and insured pest control business in a local Ontario region, with an emphasis on cost-effective strategies for growth.\n- A detailed marketing strategy, including:\n  - Recommendations for social media platforms most effective for local service marketing.\n  - Sample content or posting strategies to build local customer awareness and trust.\n  - Tips for low-cost or organic customer acquisition approaches (e.g. community engagement, referral programs).\n- Competitive analysis:\n  - Identify ways the business can differentiate itself from larger, nationwide pest control competitors (e.g. personalized service, community focus, flexible options).\n- A basic customer profile and target demographic:\n  - Provide insights into the local socio-economic demographics of Simcoe County most likely to require pest control services.\n  - Recommend which segment(s) to focus outreach on first, with rationale.\n- Suggestions for scalable business practices and tools suitable for solo entrepreneurs in the service industry.\n- Include any free or low-cost resources, tools, or local programs that could support a new business in Ontario.\n\nAsk me clarifying questions until you are 95% confident you can complete the task successfully. Take a deep breath and take it step by step. Remember to search the internet to retrieve up-to-date information.",
+      "category": "business",
+      "description": "Comprehensive business and marketing plan for a solo-operated pest control business in Ontario."
+    }
+  ]
+};
+
+    // Function to truncate text
+    function truncateText(text, maxLength) {
+      if (text.length <= maxLength) return text;
+      return text.substr(0, maxLength) + '...';
+    }
+
+    // Function to generate prompt cards
+    function generatePromptCards(prompts) {
+      const container = document.getElementById('prompts-container');
+      container.innerHTML = '';
+      
+      prompts.forEach(prompt => {
+        const title = prompt.filename.replace('.md', '').replace(/%20/g, ' ').replace(/_/g, ' ');
+        const description = prompt.description || truncateText(prompt.content, 150);
+        
+        const card = document.createElement('div');
+        card.className = 'bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden prompt-card';
+        card.innerHTML = `
+          <div class="p-6">
+            <div class="flex items-center justify-between mb-4">
+              <span class="px-3 py-1 bg-primary-light dark:bg-primary-dark text-white text-sm rounded-full capitalize">${prompt.category.replace(/-/g, ' ')}</span>
+              <span class="text-xs text-gray-500 dark:text-gray-400">ChatGPT</span>
+            </div>
+            <h3 class="text-lg font-bold text-text-light dark:text-text-dark mb-3">${title}</h3>
+            <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">${description}</p>
+            <button class="w-full px-4 py-2 bg-primary-light hover:bg-opacity-90 dark:bg-primary-dark dark:hover:bg-opacity-90 text-white rounded-lg text-sm font-medium transition-colors flex items-center justify-center view-prompt-btn" data-title="${title}" data-content="${prompt.content.replace(/"/g, '&quot;')}">
+              <span class="material-icons text-sm mr-2">visibility</span>
+              View Prompt
+            </button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+      
+      // Add event listeners to view prompt buttons
+      document.querySelectorAll('.view-prompt-btn').forEach(button => {
+        button.addEventListener('click', function() {
+          const title = this.getAttribute('data-title');
+          const content = this.getAttribute('data-content');
+          currentPromptContent = content;
+          
+          document.getElementById('modalTitle').textContent = title;
+          document.getElementById('modalContent').textContent = content;
+          modal.style.display = "block";
+        });
+      });
+    }
+
+    // Initial render
+    generatePromptCards(promptData.prompts);
+
+    // Search and filter functionality
+    const searchInput = document.getElementById('search-input');
+    const categoryFilter = document.getElementById('category-filter');
+    
+    function filterPrompts() {
+      const searchTerm = searchInput.value.toLowerCase();
+      const selectedCategory = categoryFilter.value;
+      
+      const filteredPrompts = promptData.prompts.filter(prompt => {
+        const title = prompt.filename.replace('.md', '').replace(/%20/g, ' ').toLowerCase();
+        const content = prompt.content.toLowerCase();
+        const description = (prompt.description || '').toLowerCase();
+        
+        const matchesSearch = searchTerm === '' || 
+          title.includes(searchTerm) || 
+          content.includes(searchTerm) ||
+          description.includes(searchTerm);
+          
+        const matchesCategory = selectedCategory === '' || 
+          prompt.category === selectedCategory;
+          
+        return matchesSearch && matchesCategory;
+      });
+      
+      generatePromptCards(filteredPrompts);
+    }
+    
+    searchInput.addEventListener('input', filterPrompts);
+    categoryFilter.addEventListener('change', filterPrompts);
+</script>
+</body>
+</html>

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI Readiness Assessment - aiaid.me</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: {
+                light: "#FF5733",
+                dark: "#FF6F4F"
+              },
+              "background-light": "#FFFFFF",
+              "background-dark": "#121212",
+              "text-light": "#1F2937",
+              "text-dark": "#F3F4F6",
+              "secondary-light": "#F3F4F6",
+              "secondary-dark": "#1F2937"
+            },
+            fontFamily: {
+              display: ["Inter", "sans-serif"],
+            },
+            borderRadius: {
+              DEFAULT: "0.5rem",
+            },
+          },
+        },
+      };
+    </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+    .progress-bar {
+      transition: width 0.5s ease-in-out;
+    }
+    .option-button {
+      transition: all 0.2s ease;
+    }
+    .option-button.selected {
+      background-color: #FF5733;
+      color: white;
+      border-color: #FF5733;
+    }
+    .dark .option-button.selected {
+      background-color: #FF6F4F;
+      color: white;
+      border-color: #FF6F4F;
+    }
+  </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="min-h-screen flex flex-col">
+<header class="p-4 sm:px-6 lg:px-8">
+<div class="flex items-center justify-between">
+<div class="flex items-center">
+<a href="index.html" class="flex items-center">
+<span class="material-icons text-primary-light dark:text-primary-dark text-3xl">hub</span>
+<span class="text-xl font-bold ml-2 text-text-light dark:text-text-dark">aiaid.me</span>
+</a>
+</div>
+<button class="md:hidden p-2 rounded-md text-text-light dark:text-text-dark">
+<span class="material-icons">menu</span>
+</button>
+<nav class="hidden md:flex items-center space-x-6">
+<a class="text-sm font-medium text-text-light dark:text-text-dark hover:text-primary-light dark:hover:text-primary-dark" href="agents.html">AI Agents</a>
+<a class="text-sm font-medium text-text-light dark:text-text-dark hover:text-primary-light dark:hover:text-primary-dark" href="prompts.html">Prompts Bank</a>
+<a class="text-sm font-medium text-text-light dark:text-text-dark hover:text-primary-light dark:hover:text-primary-dark" href="guidance.html">Expert Guidance</a>
+<a class="text-sm font-medium text-text-light dark:text-text-dark hover:text-primary-light dark:hover:text-primary-dark" href="about.html">About Us</a>
+</nav>
+</div>
+</header>
+
+<main class="flex-grow px-4 sm:px-6 lg:px-8 py-8">
+<div class="max-w-4xl mx-auto">
+<div class="text-center mb-10">
+<h1 class="text-3xl sm:text-4xl font-extrabold text-text-light dark:text-text-dark mb-4">
+                    AI Readiness Assessment
+                </h1>
+<p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                    Assess your organization's AI maturity and receive tailored recommendations.
+                </p>
+</div>
+
+<div class="bg-white dark:bg-secondary-dark rounded-xl shadow-lg p-6 mb-8">
+<div class="flex justify-between items-center mb-2">
+<span class="text-sm font-medium text-gray-700 dark:text-gray-300">Progress</span>
+<span class="text-sm font-medium text-gray-700 dark:text-gray-300"><span id="current-question">1</span>/5</span>
+</div>
+<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+<div id="progress-bar" class="progress-bar bg-primary-light dark:bg-primary-dark h-2.5 rounded-full" style="width: 20%"></div>
+</div>
+</div>
+
+<form id="assessment-form">
+<div id="question-container">
+<!-- Questions will be dynamically inserted here -->
+</div>
+
+<div class="flex justify-between mt-8">
+<button type="button" id="prev-btn" class="px-6 py-3 bg-secondary-light dark:bg-secondary-dark text-text-light dark:text-text-dark font-semibold rounded-lg border border-gray-300 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-800 hidden">
+<span class="material-icons mr-2">arrow_back</span> Previous
+</button>
+</div>
+</form>
+
+<div id="results-container" class="hidden">
+<div class="bg-white dark:bg-secondary-dark rounded-xl shadow-lg p-8 text-center">
+<h2 class="text-2xl font-bold text-text-light dark:text-text-dark mb-4">Your AI Readiness Results</h2>
+<div id="score-display" class="text-5xl font-bold text-primary-light dark:text-primary-dark my-6"></div>
+<div id="level-display" class="text-xl font-semibold text-text-light dark:text-text-dark mb-4"></div>
+<div id="description-display" class="text-gray-600 dark:text-gray-300 mb-6"></div>
+<div id="cta-display" class="bg-blue-50 dark:bg-blue-900/30 rounded-lg p-4 mb-6"></div>
+<a href="contact.html" id="contact-btn" class="px-6 py-3 bg-primary-light hover:bg-opacity-90 dark:bg-primary-dark dark:hover:bg-opacity-90 text-white font-semibold rounded-lg shadow-md inline-block">
+Book Free Workshop
+</a>
+</div>
+</div>
+</div>
+</main>
+
+<footer class="p-4 sm:px-6 lg:px-8 text-center text-gray-500 dark:text-gray-400 text-sm">
+<p>© 2025 aiaid.me. All rights reserved.</p>
+</footer>
+</div>
+
+<script>
+    const assessmentData = {
+  "title": "AI Readiness Assessment",
+  "description": "Assess your organization's AI maturity and receive tailored recommendations.",
+  "questions": [
+    {
+      "id": "q1",
+      "text": "How clear is your organization’s strategy for using AI?",
+      "options": [
+        { "label": "No strategy in place", "value": 1 },
+        { "label": "Some ideas, but not defined", "value": 2 },
+        { "label": "Defined strategy, early stage", "value": 3 },
+        { "label": "Clear strategy with leadership support", "value": 4 }
+      ]
+    },
+    {
+      "id": "q2",
+      "text": "How prepared is your data and IT infrastructure for AI adoption?",
+      "options": [
+        { "label": "Limited data collection or siloed systems", "value": 1 },
+        { "label": "Some structured data, but not integrated", "value": 2 },
+        { "label": "Data is integrated but limited AI-ready infrastructure", "value": 3 },
+        { "label": "Strong, scalable infrastructure and high-quality data", "value": 4 }
+      ]
+    },
+    {
+      "id": "q3",
+      "text": "How would you rate your team’s knowledge of AI and automation?",
+      "options": [
+        { "label": "No internal expertise", "value": 1 },
+        { "label": "Basic awareness in some teams", "value": 2 },
+        { "label": "Dedicated people experimenting with AI", "value": 3 },
+        { "label": "Skilled team with AI/ML experience", "value": 4 }
+      ]
+    },
+    {
+      "id": "q4",
+      "text": "How much of your workflow is ready for automation or AI-driven improvements?",
+      "options": [
+        { "label": "No identified processes", "value": 1 },
+        { "label": "Some manual processes identified for automation", "value": 2 },
+        { "label": "Several processes already automated or piloted", "value": 3 },
+        { "label": "Many processes optimized with AI or automation", "value": 4 }
+      ]
+    },
+    {
+      "id": "q5",
+      "text": "How open is your organization to adopting AI-driven tools and changes?",
+      "options": [
+        { "label": "Resistance to change", "value": 1 },
+        { "label": "Some interest but cautious", "value": 2 },
+        { "label": "Open to change with right support", "value": 3 },
+        { "label": "Strong culture of innovation and adoption", "value": 4 }
+      ]
+    }
+  ],
+  "scoring": {
+    "min": 5,
+    "max": 20,
+    "levels": [
+      {
+        "range": [5, 9],
+        "label": "AI Beginner",
+        "description": "Your company is at the very beginning of the AI journey. There is great potential to save time and resources by starting with basic tools. The next step is to identify your most time-consuming manual processes and apply simple AI solutions.",
+        "cta": '<span class="text-black dark:text-black">Book a free workshop to review your results and create an AI action plan tailored to your needs.</span>'
+      },
+      {
+        "range": [10, 14],
+        "label": "AI Explorer",
+        "description": "You have started experimenting with AI and see the potential. Now it's time to structure your work, define a clear strategy, and integrate AI into specific processes where you can measure results.",
+        "cta": '<span class="text-black dark:text-black">Book a free workshop to transform your early experiments into a structured AI roadmap with measurable business outcomes.</span>'
+      },
+      {
+        "range": [15, 20],
+        "label": "AI Leader",
+        "description": "AI is already part of your business, and you are ahead of many competitors. The focus now is scaling your solutions, optimizing advanced data analysis, and building custom AI tools to create a long-term market advantage.",
+        "cta": '<span class="text-black dark:text-black">Book a free workshop to explore advanced use cases, innovation opportunities, and scaling strategies for your AI initiatives.</span>'
+      }
+    ]
+  }
+};
+
+    let currentQuestionIndex = 0;
+    let answers = {};
+
+    // DOM Elements
+    const questionContainer = document.getElementById('question-container');
+    const prevBtn = document.getElementById('prev-btn');
+    const progressBar = document.getElementById('progress-bar');
+    const currentQuestionEl = document.getElementById('current-question');
+    const resultsContainer = document.getElementById('results-container');
+    const contactBtn = document.getElementById('contact-btn');
+
+    // Initialize the assessment
+    function initAssessment() {
+      renderQuestion(currentQuestionIndex);
+      updateProgressBar();
+      updateNavigationButtons();
+    }
+
+    // Render a question
+    function renderQuestion(index) {
+      const question = assessmentData.questions[index];
+      let selectedValue = answers[question.id] || null;
+
+      let optionsHtml = '';
+      question.options.forEach(option => {
+        const isSelected = selectedValue == option.value;
+        optionsHtml += `
+          <button 
+            type="button"
+            id="${question.id}-${option.value}" 
+            data-question="${question.id}"
+            data-value="${option.value}"
+            class="option-button w-full text-left p-4 mb-3 rounded-lg border border-gray-300 dark:border-gray-600 hover:border-primary-light dark:hover:border-primary-dark ${isSelected ? 'selected' : ''}"
+          >
+            ${option.label}
+          </button>
+        `;
+      });
+
+      questionContainer.innerHTML = `
+        <div class="bg-white dark:bg-secondary-dark rounded-xl shadow-lg p-6">
+          <h3 class="text-xl font-semibold text-text-light dark:text-text-dark mb-6">
+            ${index + 1}. ${question.text}
+          </h3>
+          <div class="space-y-2">
+            ${optionsHtml}
+          </div>
+        </div>
+      `;
+
+      // Add event listeners to option buttons
+      document.querySelectorAll('.option-button').forEach(button => {
+        button.addEventListener('click', () => {
+          // Remove selected class from all buttons in this question
+          document.querySelectorAll(`.option-button[data-question="${button.dataset.question}"]`).forEach(btn => {
+            btn.classList.remove('selected');
+          });
+          
+          // Add selected class to clicked button
+          button.classList.add('selected');
+          
+          // Save the answer
+          answers[button.dataset.question] = parseInt(button.dataset.value);
+          
+          // Move to next question or show results after a short delay
+          setTimeout(() => {
+            if (currentQuestionIndex < assessmentData.questions.length - 1) {
+              currentQuestionIndex++;
+              renderQuestion(currentQuestionIndex);
+              updateProgressBar();
+              updateNavigationButtons();
+            } else {
+              // Last question - show results
+              showResults();
+            }
+          }, 300);
+        });
+      });
+    }
+
+    // Update progress bar
+    function updateProgressBar() {
+      const progress = ((currentQuestionIndex + 1) / assessmentData.questions.length) * 100;
+      progressBar.style.width = `${progress}%`;
+      currentQuestionEl.textContent = currentQuestionIndex + 1;
+    }
+
+    // Update navigation buttons
+    function updateNavigationButtons() {
+      prevBtn.classList.toggle('hidden', currentQuestionIndex === 0);
+    }
+
+    // Previous button handler
+    function goToPrevQuestion() {
+      if (currentQuestionIndex > 0) {
+        currentQuestionIndex--;
+        renderQuestion(currentQuestionIndex);
+        updateProgressBar();
+        updateNavigationButtons();
+      }
+    }
+
+    // Calculate score and determine level
+    function calculateResults() {
+      let totalScore = 0;
+      
+      // Sum all answer values
+      Object.values(answers).forEach(value => {
+        totalScore += value;
+      });
+      
+      // Find the matching level based on scoring ranges
+      let level = null;
+      for (const scoringLevel of assessmentData.scoring.levels) {
+        const [min, max] = scoringLevel.range;
+        if (totalScore >= min && totalScore <= max) {
+          level = scoringLevel;
+          break;
+        }
+      }
+      
+      // Fallback if no level found
+      if (!level) {
+        level = assessmentData.scoring.levels[0];
+      }
+      
+      return {
+        score: totalScore,
+        level: level
+      };
+    }
+
+    // Show results
+    function showResults() {
+      // Check if all questions are answered
+      if (Object.keys(answers).length < assessmentData.questions.length) {
+        alert("Please answer all questions before submitting.");
+        return;
+      }
+      
+      const results = calculateResults();
+      
+      document.getElementById('score-display').textContent = results.score;
+      document.getElementById('level-display').textContent = results.level.label;
+      document.getElementById('description-display').textContent = results.level.description;
+      document.getElementById('cta-display').innerHTML = `<p class="text-blue-800 dark:text-blue-200">${results.level.cta}</p>`;
+      
+      document.querySelector('form').classList.add('hidden');
+      resultsContainer.classList.remove('hidden');
+    }
+
+    // Event Listeners
+    prevBtn.addEventListener('click', goToPrevQuestion);
+
+    // Initialize the assessment when the page loads
+    document.addEventListener('DOMContentLoaded', initAssessment);
+  </script>
+</body>
+</html>
