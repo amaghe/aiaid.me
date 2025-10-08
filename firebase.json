@@ -1,0 +1,11 @@
+{
+  "hosting": {
+    "public": ".",
+    "rewrites": [
+      { "source": "/agents", "destination": "/agents.html" },
+      { "source": "/ai-assessment", "destination": "/ai-assessment.html" },
+      { "source": "/prompts", "destination": "/prompts.html" },
+      { "source": "/", "destination": "/index.html" }
+    ]
+  }
+}
