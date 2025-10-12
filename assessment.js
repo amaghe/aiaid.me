@@ -1,5 +1,5 @@
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('app-initialized', function() {
   let assessmentData = {};
   let currentQuestionIndex = 0;
   let answers = {};

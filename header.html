@@ -7,15 +7,20 @@
         <span class="text-xl font-bold ml-2 text-text-light dark:text-text-dark">aiaid.me</span>
       </a>
     </div>
-    <button class="md:hidden p-2 rounded-md text-text-light dark:text-text-dark" id="mobile-menu-button">
-      <span class="material-icons">menu</span>
-    </button>
+    <div class="flex items-center">
+      <button id="theme-toggle-mobile" class="md:hidden p-2 rounded-full bg-secondary-light dark:bg-secondary-dark hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors mr-2">
+        <span class="material-icons text-text-light dark:text-text-dark">dark_mode</span>
+      </button>
+      <button class="md:hidden p-2 rounded-md text-text-light dark:text-text-dark" id="mobile-menu-button">
+        <span class="material-icons">menu</span>
+      </button>
+    </div>
     <nav class="hidden md:flex items-center space-x-6" id="desktop-nav">
       <a class="text-sm font-medium text-text-light dark:text-text-dark hover:text-primary-light dark:hover:text-primary-dark transition-colors" href="agents.html">AI Agents</a>
       <a class="text-sm font-medium text-text-light dark:text-text-dark hover:text-primary-light dark:hover:text-primary-dark transition-colors" href="prompts.html">Prompts Bank</a>
       <a class="text-sm font-medium text-text-light dark:text-text-dark hover:text-primary-light dark:hover:text-primary-dark transition-colors" href="guidance.html">Expert Guidance</a>
       <a class="text-sm font-medium text-text-light dark:text-text-dark hover:text-primary-light dark:hover:text-primary-dark transition-colors" href="about.html">About Us</a>
-      <button id="theme-toggle" class="p-2 rounded-full bg-secondary-light dark:bg-secondary-dark hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors">
+      <button id="theme-toggle-desktop" class="p-2 rounded-full bg-secondary-light dark:bg-secondary-dark hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors">
         <span class="material-icons text-text-light dark:text-text-dark">dark_mode</span>
       </button>
     </nav>

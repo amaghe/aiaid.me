@@ -1,49 +1,68 @@
 
 document.addEventListener("DOMContentLoaded", function() {
-  // Fetch and insert header
-  fetch("header.html")
+  const headerPromise = fetch("header.html")
     .then(response => response.text())
     .then(data => {
       document.getElementById("header-placeholder").innerHTML = data;
-      // Initialize theme toggle after header is loaded
-      initializeThemeToggle();
-      // Initialize mobile menu toggle after header is loaded
-      initializeMobileMenu();
     });
 
-  // Fetch and insert footer
-  fetch("footer.html")
+  const footerPromise = fetch("footer.html")
     .then(response => response.text())
     .then(data => {
       document.getElementById("footer-placeholder").innerHTML = data;
     });
+
+  Promise.all([headerPromise, footerPromise]).then(() => {
+    initializeThemeToggle();
+    initializeMobileMenu();
+    
+    // Dispatch a custom event to signal that the app is initialized
+    const appInitializedEvent = new Event('app-initialized');
+    document.dispatchEvent(appInitializedEvent);
+  });
 });
 
 function initializeThemeToggle() {
-  const themeToggle = document.getElementById('theme-toggle');
-  if (themeToggle) {
-    const themeIcon = themeToggle.querySelector('span');
+  const themeToggleDesktop = document.getElementById('theme-toggle-desktop');
+  const themeToggleMobile = document.getElementById('theme-toggle-mobile');
+  
+  const themeIconDesktop = themeToggleDesktop ? themeToggleDesktop.querySelector('span') : null;
+  const themeIconMobile = themeToggleMobile ? themeToggleMobile.querySelector('span') : null;
 
-    // Check for saved theme or default to light
-    if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        document.documentElement.classList.add('dark');
-        if (themeIcon) themeIcon.textContent = 'light_mode';
+  const applyTheme = (theme) => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+      if (themeIconDesktop) themeIconDesktop.textContent = 'light_mode';
+      if (themeIconMobile) themeIconMobile.textContent = 'light_mode';
     } else {
-        document.documentElement.classList.remove('dark');
-        if (themeIcon) themeIcon.textContent = 'dark_mode';
+      document.documentElement.classList.remove('dark');
+      if (themeIconDesktop) themeIconDesktop.textContent = 'dark_mode';
+      if (themeIconMobile) themeIconMobile.textContent = 'dark_mode';
     }
+  };
 
-    themeToggle.addEventListener('click', () => {
-      if (document.documentElement.classList.contains('dark')) {
-        document.documentElement.classList.remove('dark');
-        localStorage.setItem('color-theme', 'light');
-        if (themeIcon) themeIcon.textContent = 'dark_mode';
-      } else {
-        document.documentElement.classList.add('dark');
-        localStorage.setItem('color-theme', 'dark');
-        if (themeIcon) themeIcon.textContent = 'light_mode';
-      }
-    });
+  if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    applyTheme('dark');
+  } else {
+    applyTheme('light');
+  }
+
+  const toggleAction = () => {
+    const isDark = document.documentElement.classList.contains('dark');
+    if (isDark) {
+      applyTheme('light');
+      localStorage.setItem('color-theme', 'light');
+    } else {
+      applyTheme('dark');
+      localStorage.setItem('color-theme', 'dark');
+    }
+  };
+
+  if (themeToggleDesktop) {
+    themeToggleDesktop.addEventListener('click', toggleAction);
+  }
+  if (themeToggleMobile) {
+    themeToggleMobile.addEventListener('click', toggleAction);
   }
 }
 
@@ -53,7 +72,7 @@ function initializeMobileMenu() {
 
   if (mobileMenuButton && mobileMenu) {
     mobileMenuButton.addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden'); // Or 'active' if you use that class
+      mobileMenu.classList.toggle('hidden');
     });
   }
 }
