@@ -1,0 +1,39 @@
+
+[
+  {
+    "name": "Customer Support Agent",
+    "icon": "smart_toy",
+    "description": "Automate customer inquiries with natural language processing and sentiment analysis.",
+    "price": "$99/month"
+  },
+  {
+    "name": "Sales Analytics Agent",
+    "icon": "trending_up",
+    "description": "Predict sales trends and identify opportunities with advanced machine learning algorithms.",
+    "price": "$149/month"
+  },
+  {
+    "name": "Content Creation Agent",
+    "icon": "content_copy",
+    "description": "Generate high-quality marketing content, articles, and social media posts automatically.",
+    "price": "$79/month"
+  },
+  {
+    "name": "Security Monitoring Agent",
+    "icon": "security",
+    "description": "24/7 threat detection and security analysis for your digital infrastructure.",
+    "price": "$199/month"
+  },
+  {
+    "name": "HR Screening Agent",
+    "icon": "person_search",
+    "description": "Automate resume screening and candidate matching with intelligent filtering.",
+    "price": "$129/month"
+  },
+  {
+    "name": "Code Review Agent",
+    "icon": "code",
+    "description": "Automated code analysis, bug detection, and security vulnerability scanning.",
+    "price": "$169/month"
+  }
+]
