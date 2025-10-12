@@ -1,25 +1,21 @@
 
 document.addEventListener("DOMContentLoaded", function() {
-  const headerPromise = fetch("header.html")
+  // Fetch and insert header
+  fetch("header.html")
     .then(response => response.text())
     .then(data => {
       document.getElementById("header-placeholder").innerHTML = data;
+      // Initialize theme toggle and mobile menu after header is loaded
+      initializeThemeToggle();
+      initializeMobileMenu();
     });
 
-  const footerPromise = fetch("footer.html")
+  // Fetch and insert footer
+  fetch("footer.html")
     .then(response => response.text())
     .then(data => {
       document.getElementById("footer-placeholder").innerHTML = data;
     });
-
-  Promise.all([headerPromise, footerPromise]).then(() => {
-    initializeThemeToggle();
-    initializeMobileMenu();
-    
-    // Dispatch a custom event to signal that the app is initialized
-    const appInitializedEvent = new Event('app-initialized');
-    document.dispatchEvent(appInitializedEvent);
-  });
 });
 
 function initializeThemeToggle() {
