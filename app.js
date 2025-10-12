@@ -5,9 +5,9 @@ document.addEventListener("DOMContentLoaded", function() {
     .then(response => response.text())
     .then(data => {
       document.getElementById("header-placeholder").innerHTML = data;
-      // Re-initialize theme toggle after header is loaded
+      // Initialize theme toggle after header is loaded
       initializeThemeToggle();
-      // Re-initialize mobile menu toggle after header is loaded
+      // Initialize mobile menu toggle after header is loaded
       initializeMobileMenu();
     });
 
@@ -24,23 +24,24 @@ function initializeThemeToggle() {
   if (themeToggle) {
     const themeIcon = themeToggle.querySelector('span');
 
+    // Check for saved theme or default to light
     if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      document.documentElement.classList.add('dark');
-      themeIcon.textContent = 'light_mode';
+        document.documentElement.classList.add('dark');
+        if (themeIcon) themeIcon.textContent = 'light_mode';
     } else {
-      document.documentElement.classList.remove('dark');
-      themeIcon.textContent = 'dark_mode';
+        document.documentElement.classList.remove('dark');
+        if (themeIcon) themeIcon.textContent = 'dark_mode';
     }
 
     themeToggle.addEventListener('click', () => {
       if (document.documentElement.classList.contains('dark')) {
         document.documentElement.classList.remove('dark');
         localStorage.setItem('color-theme', 'light');
-        themeIcon.textContent = 'dark_mode';
+        if (themeIcon) themeIcon.textContent = 'dark_mode';
       } else {
         document.documentElement.classList.add('dark');
         localStorage.setItem('color-theme', 'dark');
-        themeIcon.textContent = 'light_mode';
+        if (themeIcon) themeIcon.textContent = 'light_mode';
       }
     });
   }
@@ -52,7 +53,7 @@ function initializeMobileMenu() {
 
   if (mobileMenuButton && mobileMenu) {
     mobileMenuButton.addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden');
+      mobileMenu.classList.toggle('hidden'); // Or 'active' if you use that class
     });
   }
 }
