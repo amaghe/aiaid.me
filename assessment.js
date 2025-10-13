@@ -10,18 +10,35 @@ document.addEventListener('DOMContentLoaded', function() {
   const progressBar = document.getElementById('progress-bar');
   const currentQuestionEl = document.getElementById('current-question');
   const resultsContainer = document.getElementById('results-container');
-  const contactBtn = document.getElementById('contact-btn');
 
   // Fetch assessment data
   fetch('assessment.json')
-    .then(response => response.json())
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
     .then(data => {
       assessmentData = data;
       initAssessment();
+    })
+    .catch(error => {
+      console.error('Error fetching assessment data:', error);
+      if (questionContainer) {
+        questionContainer.innerHTML = `<p class="text-red-500 text-center">Error loading assessment questions. Please check the console for details and try refreshing the page.</p>`;
+      }
     });
 
   // Initialize the assessment
   function initAssessment() {
+    if (!assessmentData.questions || assessmentData.questions.length === 0) {
+        console.error("No questions found in assessment data.");
+        if (questionContainer) {
+            questionContainer.innerHTML = `<p class="text-red-500 text-center">Assessment data is missing questions. Please check the assessment.json file.</p>`;
+        }
+        return;
+    }
     renderQuestion(currentQuestionIndex);
     updateProgressBar();
     updateNavigationButtons();
@@ -62,18 +79,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add event listeners to option buttons
     document.querySelectorAll('.option-button').forEach(button => {
       button.addEventListener('click', () => {
-        // Remove selected class from all buttons in this question
         document.querySelectorAll(`.option-button[data-question="${button.dataset.question}"]`).forEach(btn => {
           btn.classList.remove('selected');
         });
-        
-        // Add selected class to clicked button
         button.classList.add('selected');
-        
-        // Save the answer
         answers[button.dataset.question] = parseInt(button.dataset.value);
         
-        // Move to next question or show results after a short delay
         setTimeout(() => {
           if (currentQuestionIndex < assessmentData.questions.length - 1) {
             currentQuestionIndex++;
@@ -81,7 +92,6 @@ document.addEventListener('DOMContentLoaded', function() {
             updateProgressBar();
             updateNavigationButtons();
           } else {
-            // Last question - show results
             showResults();
           }
         }, 300);
@@ -114,25 +124,17 @@ document.addEventListener('DOMContentLoaded', function() {
   // Calculate score and determine level
   function calculateResults() {
     let totalScore = 0;
-    
-    // Sum all answer values
     Object.values(answers).forEach(value => {
       totalScore += value;
     });
     
-    // Find the matching level based on scoring ranges
-    let level = null;
+    let level = assessmentData.scoring.levels[0]; // Default to first level
     for (const scoringLevel of assessmentData.scoring.levels) {
       const [min, max] = scoringLevel.range;
       if (totalScore >= min && totalScore <= max) {
         level = scoringLevel;
         break;
       }
-    }
-    
-    // Fallback if no level found
-    if (!level) {
-      level = assessmentData.scoring.levels[0];
     }
     
     return {
@@ -143,7 +145,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Show results
   function showResults() {
-    // Check if all questions are answered
     if (Object.keys(answers).length < assessmentData.questions.length) {
       alert("Please answer all questions before submitting.");
       return;
@@ -154,12 +155,14 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('score-display').textContent = results.score;
     document.getElementById('level-display').textContent = results.level.label;
     document.getElementById('description-display').textContent = results.level.description;
-    document.getElementById('cta-display').innerHTML = `<p class="text-blue-800 dark:text-blue-200">${results.level.cta}</p>`;
+    document.getElementById('cta-display').innerHTML = results.level.cta;
     
     document.querySelector('form').classList.add('hidden');
     resultsContainer.classList.remove('hidden');
   }
 
   // Event Listeners
-  prevBtn.addEventListener('click', goToPrevQuestion);
+  if (prevBtn) {
+    prevBtn.addEventListener('click', goToPrevQuestion);
+  }
 });
